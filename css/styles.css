@@ -1,0 +1,55 @@
+:root {
+    --background-color: #ccffdd;
+    --text-color: #004d26;
+    --text-darker-color: #00331a;
+    --border-color: #008040;
+}
+
+
+a {
+color: inherit;
+text-decoration: none;
+}
+/* ------------------- nav ---------------- */
+
+.navbar {
+    background-color: var(--background-color);
+}
+
+.navbar-brand {
+    color: var(--text-darker-color);
+    margin-left: 3%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.navbar-brand > img {
+    padding-right: 7%;
+}
+
+.navbar-brand > p {
+    float: right;
+    padding-top: 3%;
+    font-size: larger;
+}
+
+.navbar-brand > p:hover, .navbar-brand > p:focus, .navbar-brand > p:hover:active, .navbar:hover, .navbar-brand:hover  {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+
+/* -------------------- main ---------------- */
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    min-height: 300px;
+}
+
+.border-right {
+    border-right: solid 2px var(--border-color);
+}
