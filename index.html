@@ -19,12 +19,15 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
     </head>
     <body>
         <script type="text/javascript" src="node_modules/mdbootstrap/js/jquery.min.js"></script>
         <script type="text/javascript" src="node_modules/mdbootstrap/js/popper.min.js"></script>
         <script type="text/javascript" src="node_modules/mdbootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="node_modules/mdbootstrap/js/mdb.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
 
         <!-- <script src="/datepicker/js/bootstrap-datepicker.js"></script> -->
         <div class="container">
@@ -42,25 +45,31 @@
         </div>
         <main class="main">
             <div class="container-fluid">
-                <div class="row  h-100">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border-right">
-                        <table class="table">
+                <div class="row  h-100 down">
+                    <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12 border-right">
+                        <table 
+                            id="employees"
+                            class="table"
+                            data-id-field="id"
+                            data-page-list="[5, 10, 25, 50, 100, ALL]"
+                            data-page-size="5">
                             <caption class="text-center" id="table-title">List of employees</caption>
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">First Name</th>
+                                <th scope="col"  text-center>First Name</th>
                                 <th scope="col">Last Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Birth Date</th>
                                 <th scope="col">Gender</th>
+                                <th scope="col">Delete</th>
                             </thead>
                             <tbody>
                               
                             </tbody>
                           </table>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                         <form>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -108,7 +117,6 @@
                 </div>
             </div>
         </main>   
-
         <script src="/datepicker/js/bootstrap-datepicker.js"></script>
         <script src="js/model/employee.js"></script>
         <script src="js/repository/employee-crud.js"></script>

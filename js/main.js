@@ -2,11 +2,25 @@ var currentId = 1;
 
 window.onload = function (){
     console.log("loading");
+    // document.getElementById("employees").dataTable({
+    //     "sPaginationType": "bs_four_button"
+    // });	
+    $(document).ready(function() {
+        $('#employees').DataTable({
+            "ordering": false,
+            pageLength: 5,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Todos"]]
+            // "sPaginationType": "bs_four_button"
+        });
+        } );
+    
+    
     if( localStorage.getItem('employees') !== null){
         var employeesLocally = loadData() ;
         employeesLocally.forEach(employee =>{
             addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee);
-        })
+        });
+        currentId = employeesLocally.length + 1;
     } else {
         document.getElementById('table-title').innerHTML = "NO EMPLOYEES YET";
     }
@@ -34,6 +48,20 @@ function createTd( text ){
     td.appendChild(tdText);
     return td;
 }
+
+
+
+// creates an <td></td> element with delete button
+function createTdDelete(){
+    td =  document.createElement('td');
+    var tdText = document.createTextNode('');
+    td.appendChild(tdText);
+    td.innerHTML = '<button class="btn"><i class="fa fa-trash"></i></button>'
+    td.appendChild(tdText);
+    return td;
+}
+
+
 
 
 // get a date in default format in required format of day month year
@@ -72,6 +100,7 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender) {
     var tdEmail = createTd(email);
     var tdBirthDate = createTd(birthdate);
     var tdGender = createTd(gender);
+    var tdDelete = createTdDelete();
 
     tr.appendChild(tdId);
     tr.appendChild(tdFirstName);
@@ -79,6 +108,7 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender) {
     tr.appendChild(tdEmail);
     tr.appendChild(tdBirthDate);
     tr.appendChild(tdGender);
+    tr.appendChild(tdDelete);
     document.querySelector("tbody").appendChild(tr);
 }
 
