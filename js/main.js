@@ -5,11 +5,16 @@ var lastName = "lastName";
 var email ="email";
 var gender = "gender";
 
+const form = document.querySelector('form');
+const inputFirstName = document.getElementById('input-firstname');
+const inputLastName = document.getElementById('input-lastname');
+const inputEmail = document.getElementById('input-email');
+const inputGender = document.getElementById('input-gender');
+const genderSelected = inputGender.options[inputGender.selectedIndex];
 
 
 
-
-
+// creates an <td></td> element with given text
 function createTd( text ){
     td =  document.createElement('td');
     var tdText = document.createTextNode(text);
@@ -18,7 +23,7 @@ function createTd( text ){
 }
 
 
-
+// create a row table instance with given data for employee properties
 function addTableInstance (id, firstName, lastName, email, gender) {
     var tr = document.createElement('tr');
 
@@ -30,20 +35,6 @@ function addTableInstance (id, firstName, lastName, email, gender) {
     var tdEmail = createTd(email);
     var tdGender = createTd(gender);
 
-    // var tdFirstName = document.createElement('td');
-    // var tdEmail = document.createElement('td');
-    // var tdGender = document.createElement('td');
-    // var textId = document.createTextNode(id);
-    // var textFirstName = document.createTextNode(firstName);
-    // var textLastName = document.createTextNode(lastName);
-    // var textEmail = document.createTextNode(email);
-    // var textGender = document.createTextNode(gender);
-    // tdId.appendChild(textId);
-    // tdFirstName.appendChild(textFirstName);
-    // tdLastName.appendChild(textLastName);
-    // tdEmail.appendChild(textEmail);
-    // tdGender.appendChild(textGender);
-
     tr.appendChild(tdId);
     tr.appendChild(tdFirstName);
     tr.appendChild(tdLastName);
@@ -53,3 +44,13 @@ function addTableInstance (id, firstName, lastName, email, gender) {
 }
 
 addTableInstance(id, firstName, lastName, email, gender);
+
+// add event on form submit
+form.addEventListener('submit', function (e) {
+    e.preventDefault()
+    console.log("submit event"+inputFirstName.value + inputLastName.value + inputEmail.value + inputGender.value)
+    // itemsArray.push(input.value)
+    // localStorage.setItem('items', JSON.stringify(itemsArray))
+    // liMaker(input.value)
+    // input.value = ''
+  })
