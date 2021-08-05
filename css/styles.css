@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Georama:wght@300&display=swap');
+
 :root {
     --background-color: #ccffdd;
+    --background-lighter-color: #e6ffee;
+    --background-darker-color: #b3ffcc;
     --text-color: #004d26;
     --text-darker-color: #00331a;
     --border-color: #008040;
@@ -10,6 +14,8 @@ a {
 color: inherit;
 text-decoration: none;
 }
+
+
 /* ------------------- nav ---------------- */
 
 .navbar {
@@ -51,5 +57,56 @@ text-decoration: none;
 }
 
 .border-right {
-    border-right: solid 2px var(--border-color);
+    border-right: solid 10px var(--border-color);
 }
+
+.label-firstname, .label-lastname, .label-email, .label-birthdate {
+    color: var(--text-color);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 150%;
+}
+
+.gender-dropdown {
+    padding-left: 23%;
+}
+
+.gender-button {
+    background-color: var(--background-lighter-color) !important;
+    width: 70%;
+    color: var(--text-color);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 1.3em !important;
+}
+
+.gender-menu {
+    width: 56%;
+}
+
+.submit {
+    background-color: var(--background-darker-color) !important;
+    color: var(--text-color);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 1.4em !important;
+}
+
+.birthdateLabel {
+    margin-bottom: 0 !important;
+    margin-top: 1.5%;
+    padding-left: 0 !important;
+}
+
+.birthdate {
+    margin-top: 0 !important;
+}
+
+.email {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.submit-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+

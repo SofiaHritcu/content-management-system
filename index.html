@@ -10,6 +10,15 @@
         <link rel="stylesheet" href="node_modules/mdbootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="node_modules/mdbootstrap/css/mdb.min.css">
         <link rel="stylesheet" href="node_modules/mdbootstrap/css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Georama:wght@300&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@400;600;700&display=swap" rel="stylesheet">
     </head>
     <body>
         <script src="js/main.js"></script>
@@ -34,41 +43,116 @@
             <div class="container-fluid">
                 <div class="row  h-100">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border-right">
-                    
+                        <table  
+                            class="table" id="table"  
+                            data-show-header="true" 
+                            data-pagination="true"
+                            data-id-field="name"
+                            data-page-list="[5, 10, 25, 50, 100, ALL]"
+                            data-page-size="5">
+                                <caption>List of users</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">First</th>
+                                        <th scope="col">Last</th>
+                                        <th scope="col">Handle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">4</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">5</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                </tbody>
+                          </table>
+                        
+                        
+                        
+                        <!-- <table id="table"  data-show-header="true" data-pagination="true"
+                            data-id-field="name"
+                            data-page-list="[5, 10, 25, 50, 100, ALL]"
+                            data-page-size="5">
+                        <thead>
+                        <tr>
+                            <th data-field="name" data-formatter="nameFormatter">Name</th>
+                            <th data-field="stargazers_count" data-formatter="starsFormatter">Stars</th>
+                            <th data-field="forks_count" data-formatter="forksFormatter">Forks</th>
+                            <th data-field="description">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        </table> -->
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <form>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputFirstName">First name</label>
+                                    <label class="label-firstname" for="inputFirstName">First name</label>
                                     <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="inputFirstName">First name</label>
-                                    <input type="text" class="form-control" id="inputFirstName" placeholder="Last name">
+                                    <label class="label-lastname" for="inputLastName">Last name</label>
+                                    <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
-                                <label for="inputEmail">Email</label>
+                            <div class="form-group col-md-12 email">
+                                <label class="label-email" for="inputEmail">Email</label>
                                 <input type="email" class="form-control" id="inputEmail" placeholder="Email">
                             </div>
-                                <!-- Example split danger button -->
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            
+                            <div class="form-group col-md-12 birthdateLabel">
+                                <label class="label-birthdate" for="inputBirtdate">Birth date</label>
+                            </div>
+                            <div class="md-form md-outline input-with-post-icon datepicker birthdate">
+                                <input placeholder="Select date" type="date" id="inputBirtdate" class="form-control">
+                            </div>
+
+                            <div class="dropdown gender-dropdown">
+                                <button 
+                                    class="btn dropdown-toggle gender-button"
+                                    type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
                                     Gender
                                 </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuButton">
+                                <ul class="dropdown-menu gender-menu" role="menu" aria-labelledby="dropdownMenuButton">
                                     <li class="dropdown-item" href="#">Male</li>
+                                    <hr>
                                     <li class="dropdown-item" href="#">Female</li>
                                 </ul>
                             </div>
-                            <!-- Year and Month picker -->
-                            
-                            <div class="md-form md-outline input-with-post-icon datepicker">
-                                <input placeholder="Select date" type="date" id="example" class="form-control">
-                                <!-- <label for="example">Try me...</label> -->
+                            <div class="submit-button">
+                                <button type="submit" class="btn submit">Submit</button>
                             </div>
-                            <button type="submit" class="btn btn-secondary">Submit</button>
                         </form>
                     </div>
                 </div>
