@@ -1,9 +1,10 @@
 class Employee {
-    constructor(id, firstName, lastName, email, gender){
+    constructor(id, firstName, lastName, email, birthDate, gender){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.birthDate = birthDate;
         this.gender = gender;
     }
 
@@ -41,5 +42,13 @@ class Employee {
 
     set gender (gender) {
         this.gender = gender;
+    }
+
+    get birthDate() {
+        return this.birthDate;
+    }
+
+    set birthDate (birthDate) {
+        this.birthDate = birthDate;
     }
 }

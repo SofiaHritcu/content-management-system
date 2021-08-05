@@ -90,6 +90,13 @@ text-decoration: none;
     font-size: 1.4em !important;
 }
 
+.changeBirthDate {
+    background-color: var(--background-lighter-color) !important;
+    color: var(--text-color);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 1em !important;
+}
+
 .birthdateLabel, .genderLabel {
     margin-bottom: 0 !important;
     margin-top: 1.5%;
@@ -105,7 +112,7 @@ text-decoration: none;
     padding-right: 0 !important;
 }
 
-.submit-button {
+.submit-button, .change-button {
     display: flex;
     justify-content: center;
     margin-top: 5%;

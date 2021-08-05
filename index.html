@@ -25,6 +25,8 @@
         <script type="text/javascript" src="node_modules/mdbootstrap/js/popper.min.js"></script>
         <script type="text/javascript" src="node_modules/mdbootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="node_modules/mdbootstrap/js/mdb.min.js"></script>
+
+        <!-- <script src="/datepicker/js/bootstrap-datepicker.js"></script> -->
         <div class="container">
             <nav class="navbar navbar-expand-lg fixed-top">
                 <a class="navbar-brand" href="#">
@@ -47,9 +49,10 @@
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">FirstName</th>
-                                <th scope="col">LastName</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Birth Date</th>
                                 <th scope="col">Gender</th>
                             </thead>
                             <tbody>
@@ -62,32 +65,35 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="label-firstname" for="input-firstname">First name</label>
-                                    <input type="text" class="form-control" id="input-firstname" placeholder="eg. Conor">
+                                    <input type="text" class="form-control" id="input-firstname" placeholder="eg. Conor" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="label-lastname" for="input-lastname">Last name</label>
-                                    <input type="text" class="form-control" id="input-lastname" placeholder="eg. McGregor">
+                                    <input type="text" class="form-control" id="input-lastname" placeholder="eg. McGregor" required>
                                 </div>
                             </div>
                             <div class="form-group col-md-12 email">
                                 <label class="label-email" for="input-email">Email</label>
-                                <input type="email" class="form-control" id="input-email" placeholder="eg. name@smth.smth">
+                                <input type="email" class="form-control" id="input-email" placeholder="eg. name@smth.smth" required>
                             </div>
                             
                             <div class="form-group col-md-12 birthdateLabel">
                                 <label class="label-birthdate" for="input-birthdate">Birth date</label>
                             </div>
-                            <div class="md-form md-outline input-with-post-icon datepicker birthdate">
-                                <input placeholder="Select date" type="date" id="input-birthdate" class="form-control">
+                            <div class="md-form md-outline input-with-post-icon  birthdate" >
+                                <input placeholder="Select date" type="date"  id="input-birthdate" class="form-control" required>
                             </div>
+
+                            
 
                             <div class="form-group col-md-12 genderLabel">
                                 <label class="label-gender" for="input-gender">Gender</label>
                             </div>
                             <div class="input-group mb-3">
-                                <select class="custom-select select-secondary" id="input-gender">
-                                  <option selected value="male">Male</option>
-                                  <option class="option-gender" value="female">Female</option>
+                                <select class="custom-select select-secondary" id="input-gender" required>
+                                    <option value="" disabled>Please select gender</option>
+                                    <option value="male">Male</option>
+                                    <option class="option-gender" value="female">Female</option>
                                 </select>
                                 <div class="input-group-append">
                                   <label class="input-group-text in-select-gender" for="input-group-select-gender">Gender</label>
@@ -102,6 +108,8 @@
                 </div>
             </div>
         </main>   
+
+        <script src="/datepicker/js/bootstrap-datepicker.js"></script>
         <script src="js/main.js"></script>
      
     </body>
