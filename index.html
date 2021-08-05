@@ -30,7 +30,7 @@
                 <a class="navbar-brand" href="#">
                     <img 
                         src="../img/find-employee.ico" 
-                        width="45" 
+                        width="47" 
                         height="45" 
                         class="d-inline-block align-top" 
                         alt="">
@@ -61,41 +61,39 @@
                         <form>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label class="label-firstname" for="inputFirstName">First name</label>
-                                    <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+                                    <label class="label-firstname" for="input-firstname">First name</label>
+                                    <input type="text" class="form-control" id="input-firstname" placeholder="eg. Conor">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label class="label-lastname" for="inputLastName">Last name</label>
-                                    <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
+                                    <label class="label-lastname" for="input-lastname">Last name</label>
+                                    <input type="text" class="form-control" id="input-lastname" placeholder="eg. McGregor">
                                 </div>
                             </div>
                             <div class="form-group col-md-12 email">
-                                <label class="label-email" for="inputEmail">Email</label>
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                <label class="label-email" for="input-email">Email</label>
+                                <input type="email" class="form-control" id="input-email" placeholder="eg. name@smth.smth">
                             </div>
                             
                             <div class="form-group col-md-12 birthdateLabel">
-                                <label class="label-birthdate" for="inputBirtdate">Birth date</label>
+                                <label class="label-birthdate" for="input-birthdate">Birth date</label>
                             </div>
                             <div class="md-form md-outline input-with-post-icon datepicker birthdate">
-                                <input placeholder="Select date" type="date" id="inputBirtdate" class="form-control">
+                                <input placeholder="Select date" type="date" id="input-birthdate" class="form-control">
                             </div>
 
-                            <div class="dropdown gender-dropdown">
-                                <button 
-                                    class="btn dropdown-toggle gender-button"
-                                    type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Gender
-                                </button>
-                                <ul class="dropdown-menu gender-menu" role="menu" aria-labelledby="dropdownMenuButton">
-                                    <li class="dropdown-item" href="#">Male</li>
-                                    <hr>
-                                    <li class="dropdown-item" href="#">Female</li>
-                                </ul>
+                            <div class="form-group col-md-12 genderLabel">
+                                <label class="label-gender" for="input-gender">Gender</label>
                             </div>
+                            <div class="input-group mb-3">
+                                <select class="custom-select select-secondary" id="input-gender">
+                                  <option selected value="1">Male</option>
+                                  <option class="option-gender" value="2">Female</option>
+                                </select>
+                                <div class="input-group-append">
+                                  <label class="input-group-text in-select-gender" for="input-group-select-gender">Gender</label>
+                                </div>
+                              </div>
+
                             <div class="submit-button">
                                 <button type="submit" class="btn submit">Submit</button>
                             </div>

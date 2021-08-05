@@ -60,26 +60,27 @@ text-decoration: none;
     border-right: solid 10px var(--border-color);
 }
 
-.label-firstname, .label-lastname, .label-email, .label-birthdate {
+.label-firstname, .label-lastname, .label-email, .label-birthdate, .label-gender {
     color: var(--text-color);
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-size: 150%;
 }
 
-.gender-dropdown {
-    padding-left: 23%;
+.in-select-gender {
+    background-color: var(--background-color) !important;
 }
 
-.gender-button {
-    background-color: var(--background-lighter-color) !important;
-    width: 70%;
-    color: var(--text-color);
-    font-family: 'Yanone Kaffeesatz', sans-serif;
-    font-size: 1.3em !important;
+.custom-select:focus {
+    border-color: var(--border-color) !important;
+    box-shadow: 0 0 0 0.2rem var(--background-lighter-color) !important;
 }
 
-.gender-menu {
-    width: 56%;
+.option-gender {
+    border-radius: 50%;
+}
+
+.option-gender:active, .option-gender:active, .option-gender::after, .option-gender::before {
+    background-color: var(--background-lighter-color);
 }
 
 .submit {
@@ -89,7 +90,7 @@ text-decoration: none;
     font-size: 1.4em !important;
 }
 
-.birthdateLabel {
+.birthdateLabel, .genderLabel {
     margin-bottom: 0 !important;
     margin-top: 1.5%;
     padding-left: 0 !important;
@@ -108,6 +109,13 @@ text-decoration: none;
     display: flex;
     justify-content: center;
     margin-top: 5%;
+}
+
+
+#input-firstname:active,#input-firstname:focus, #input-lastname:active, #input-lastname:focus, #input-email:active, #input-email:focus,
+    #input-birthdate:active, #input-birthdate:focus  {
+    box-shadow: 0 0 0 0.2rem var(--background-lighter-color) !important;
+    border-color: var(--border-color);
 }
 
 
