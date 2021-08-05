@@ -110,3 +110,9 @@ text-decoration: none;
     margin-top: 5%;
 }
 
+
+/* ---------------------------- table --------------------------*/
+
+caption {
+    caption-side: top !important;
+}
