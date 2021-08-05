@@ -1,12 +1,16 @@
-
-var id = "1";
-var firstName = "firstName";
-var lastName = "lastName";
-var email ="email";
-var gender = "gender";
-
 var currentId = 1;
 
+window.onload = function (){
+    console.log("loading");
+    if( localStorage.getItem('employees') !== null){
+        var employeesLocally = loadData() ;
+        employeesLocally.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee);
+        })
+    } else {
+        document.getElementById('table-title').innerHTML = "NO EMPLOYEES YET";
+    }
+}
 
 // retrieve data from input form 
 const form = document.querySelector('form');
@@ -78,20 +82,24 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender) {
     document.querySelector("tbody").appendChild(tr);
 }
 
-function addEmployee(firstName, lastName, email, birthdate, gender){
-
+// put data in table 
+function setTableInstances (employees) {
+    employees.foreach( employee => {
+        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee);
+    })
 }
-
 
 
 // add event on form submit
 form.addEventListener('submit', function (e) {
     e.preventDefault()
     addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value);
-    // itemsArray.push(input.value)
-    // localStorage.setItem('items', JSON.stringify(itemsArray))
-    // liMaker(input.value)
-    // input.value = ''
+    var employeesLocally = loadData();
+    document.querySelector("tbody").innerHTML = "";
+    employeesLocally.forEach(employee =>{
+        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee);
+    })
+    currentId ++;
   })
 
 

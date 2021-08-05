@@ -45,7 +45,7 @@
                 <div class="row  h-100">
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border-right">
                         <table class="table">
-                            <caption class="text-center">List of employees</caption>
+                            <caption class="text-center" id="table-title">List of employees</caption>
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col">#</th>
@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group col-md-12 email">
                                 <label class="label-email" for="input-email">Email</label>
-                                <input type="email" class="form-control" id="input-email" placeholder="eg. name@smth.smth" required>
+                                <input type="email" class="form-control" id="input-email" placeholder="eg. name@smth.smth" required pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]+$">
                             </div>
                             
                             <div class="form-group col-md-12 birthdateLabel">
@@ -110,6 +110,8 @@
         </main>   
 
         <script src="/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="js/model/employee.js"></script>
+        <script src="js/repository/employee-crud.js"></script>
         <script src="js/main.js"></script>
      
     </body>

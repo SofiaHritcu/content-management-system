@@ -1,54 +1,58 @@
 class Employee {
     constructor(id, firstName, lastName, email, birthDate, gender){
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.gender = gender;
+        this.idEmployee = id;
+        this.firstNameEmployee = firstName;
+        this.lastNameEmployee = lastName;
+        this.emailEmployee = email;
+        this.birthDateEmployee = birthDate;
+        this.genderEmployee = gender;
     }
 
     get id() {
-        return this.id;
+        return this.idEmployee;
+    }
+
+    set id( id ) {
+        this.idEmployee = id;
     }
 
     get firstName() {
-        return this.firstName;
+        return this.firstNameEmployee;
     }
 
     set firstName (firstName) {
-        this.firstName = firstName;
+        this.firstNameEmployee = firstName;
     }
 
     get lastName() {
-        return this.lastName;
+        return this.lastNameEmployee;
     }
 
     set lastName (lastName) {
-        this.lastName = lastName;
+        this.lastNameEmployee = lastName;
     }
 
     get email() {
-        return this.email;
+        return this.emailEmployee;
     }
 
     set email (email) {
-        this.email = email;
+        this.emailEmployee = email;
     }
 
     get gender() {
-        return this.gender;
+        return this.genderEmployee;
     }
 
     set gender (gender) {
-        this.gender = gender;
+        this.genderEmployee = gender;
     }
 
     get birthDate() {
-        return this.birthDate;
+        return this.birthDateEmployee;
     }
 
     set birthDate (birthDate) {
-        this.birthDate = birthDate;
+        this.birthDateEmployee = birthDate;
     }
 }
