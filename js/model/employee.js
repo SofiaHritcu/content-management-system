@@ -1,11 +1,12 @@
 class Employee {
-    constructor(id, firstName, lastName, email, birthDate, gender){
+    constructor(id, firstName, lastName, email, birthDate, gender, image){
         this.idEmployee = id;
         this.firstNameEmployee = firstName;
         this.lastNameEmployee = lastName;
         this.emailEmployee = email;
         this.birthDateEmployee = birthDate;
         this.genderEmployee = gender;
+        this.imageEmployee = image;
     }
 
     get id() {
@@ -54,5 +55,13 @@ class Employee {
 
     set birthDate (birthDate) {
         this.birthDateEmployee = birthDate;
+    }
+
+    get image() {
+        return this.imageEmployee;
+    }
+
+    set image (image) {
+        this.imageEmployee = image;
     }
 }

@@ -17,13 +17,14 @@ text-decoration: none;
 
 
 .down {
-    margin-top: 3%;
+    margin-top: 0%;
 }
 
 /* ------------------- nav ---------------- */
 
 .navbar {
     background-color: var(--background-color);
+    padding: 0 !important;
 }
 
 .navbar-brand {
@@ -56,7 +57,7 @@ text-decoration: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 130vh;
     min-height: 300px;
 }
 
@@ -68,6 +69,12 @@ text-decoration: none;
     color: var(--text-color);
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-size: 150%;
+}
+
+.label-image {
+    color: var(--text-color);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 120%;
 }
 
 .in-select-gender {
@@ -130,14 +137,43 @@ text-decoration: none;
 
 
 #input-firstname:active,#input-firstname:focus, #input-lastname:active, #input-lastname:focus, #input-email:active, #input-email:focus,
-    #input-birthdate:active, #input-birthdate:focus  {
+    #input-birthdate:active, #input-birthdate:focus, #input-image:active, #input-image:focus  {
     box-shadow: 0 0 0 0.2rem var(--background-lighter-color) !important;
     border-color: var(--border-color);
 }
 
+.file {
+    visibility: hidden;
+    position: absolute;
+  }
+
+
+.image-choose {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
 
 /* ---------------------------- table --------------------------*/
 
 caption {
     caption-side: top !important;
+}
+
+.img-avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-color: var(--border-color);
+    box-shadow: 0px 0px 0px 4px rgba(204, 255, 221, 1);    
+    /* rgba(230, 255, 238, 1) */
+}
+
+.text-id {
+    width: min-content;
+    margin-left: 27%;
+    margin-top: 10%;
+    color: var(--text-color);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 120%;
 }

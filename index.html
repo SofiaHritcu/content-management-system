@@ -70,7 +70,7 @@
                           </table>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                        <form>
+                        <form action="/upload/image">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="label-firstname" for="input-firstname">First name</label>
@@ -107,8 +107,31 @@
                                 <div class="input-group-append">
                                   <label class="input-group-text in-select-gender" for="input-group-select-gender">Gender</label>
                                 </div>
-                              </div>
+                            </div>
 
+                            <div class="form-group col-md-12 image-choose">
+                                <label class="label-image" for="input-image"> Choose your profile picture</label>
+                                <div class="input-group mb-3">
+                                    <div class="custom-file">
+                                        <input 
+                                            type="file" 
+                                            class="custom-file-input" 
+                                            id="input-image" 
+                                            onchange="previewFile()"
+                                            accept="image/png, image/gif, image/jpeg">
+                                        <label 
+                                            class="custom-file-label" 
+                                            for="input-image" 
+                                            aria-describedby="input-image-add-on">
+                                            Choose image
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="border rounded-md text-center p-3">
+                                    <img src="//placehold.it/140?text=IMAGE" class="img-fluid" id="profile-picture-preview"/>
+                                </div>
+                                <input type="file" class="form-control file"  id="input-image"/>           
+                            </div>
                             <div class="submit-button">
                                 <button type="submit" class="btn submit">Submit</button>
                             </div>

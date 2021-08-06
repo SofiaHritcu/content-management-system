@@ -18,7 +18,7 @@ window.onload = function (){
     if( localStorage.getItem('employees') !== null){
         var employeesLocally = loadData() ;
         employeesLocally.forEach(employee =>{
-            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee);
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
         });
         currentId = employeesLocally.length + 1;
     } else {
@@ -33,6 +33,7 @@ const inputLastName = document.getElementById('input-lastname');
 const inputEmail = document.getElementById('input-email');
 const inputGender = document.getElementById('input-gender');
 var inputBirthDate = document.getElementById('input-birthdate');
+const inputImage = document.getElementById('input-image');
 const genderSelected = inputGender.options[inputGender.selectedIndex];
 
 
@@ -50,13 +51,43 @@ function createTd( text ){
 }
 
 
+// creates an id <td></td> element with given text and image
+function createTdId( id, image ){
+    console.log(image);
+    var td =  document.createElement('td');
+    var tdText = document.createTextNode(id);
+
+    var tdIdHTML = '<a href="javascript:;" class="avatar rounded-circle"><img class="img-avatar" width="20"height="20" alt="Image placeholder" src="'
+    tdIdHTML += image;
+    tdIdHTML += '"></a><br><p class="text-id">';
+    tdIdHTML += id;
+    tdIdHTML += '</p>';
+    td.innerHTML = tdIdHTML;
+
+    return td;
+}
+
+// deletion of employee
+function eraseEmployee(employee) {
+    const employeeToDeleteId = employee.parentNode.parentNode.firstChild.textContent;
+    var indexSelectedEmployee = employee.parentNode.parentNode.rowIndex ;
+
+    deleteEmployee(employeeToDeleteId);
+    var employeesLocally = loadData();
+    document.querySelector("tbody").innerHTML = "";
+    employeesLocally.forEach(employee =>{
+        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+    })
+    document.getElementById("employees").deleteRow(indexSelectedEmployee);
+  }
+
 
 // creates an <td></td> element with delete button
 function createTdDelete(){
     td =  document.createElement('td');
     var tdText = document.createTextNode('');
     td.appendChild(tdText);
-    td.innerHTML = '<button class="btn"><i class="fa fa-trash"></i></button>'
+    td.innerHTML = '<button class="btn" onclick="eraseEmployee(this)"><i class="fa fa-trash"></i></button>'
     td.appendChild(tdText);
     return td;
 }
@@ -89,10 +120,10 @@ function getDate(oldFormatDate) {
 
 
 // create a row table instance with given data for employee properties
-function addTableInstance (id, firstName, lastName, email, birthdate, gender) {
+function addTableInstance (id, firstName, lastName, email, birthdate, gender, image) {
     var tr = document.createElement('tr');
 
-    var tdId = createTd(id);
+    var tdId = createTdId(id, image);
     tdId.setAttribute("scope","row");
 
     var tdFirstName = createTd(firstName);
@@ -115,7 +146,7 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender) {
 // put data in table 
 function setTableInstances (employees) {
     employees.foreach( employee => {
-        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee);
+        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
 }
 
@@ -123,16 +154,41 @@ function setTableInstances (employees) {
 // add event on form submit
 form.addEventListener('submit', function (e) {
     e.preventDefault()
-    addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value);
-    var employeesLocally = loadData();
-    document.querySelector("tbody").innerHTML = "";
-    employeesLocally.forEach(employee =>{
-        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee);
-    })
-    currentId ++;
+
+
+    if (inputImage.files.length == 0) {
+        console.log(`No files chosen`);
+        return;
+    }
+
+    const file = inputImage.files[0];
+
+    var imageBase64 ='';
+
+    var resultImage = new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function() { resolve(reader.result); };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+
+    resultImage.then(function(result) {
+        imageBase64 = result;
+        addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64);
+        var employeesLocally = loadData();
+        document.querySelector("tbody").innerHTML = "";
+        employeesLocally.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        })
+        currentId ++;
+    });
+
+    form.reset();
+    
   })
 
 
+// function for changing format of birthdate by replacing the date input with a text input and a button 
 function onChange (){
     document.querySelector(".birthdate").innerHTML = '<input placeholder="Select date" type="date"  id="input-birthdate" class="form-control">';
     inputBirthDate = document.getElementById('input-birthdate');
@@ -190,6 +246,21 @@ inputBirthDate.addEventListener('change', function(e){
     document.querySelector(".birthdate").innerHTML = firstPartInnerHTML;
 })
 
+// preview the image  
+function previewFile() {
+    const preview = document.getElementById("profile-picture-preview");
+    const file = document.querySelector('input[type=file]').files[0];
+    const reader = new FileReader();
+  
 
+    reader.addEventListener("load", function () {
+      // convert image file to base64 string
+      preview.src = reader.result;
+    }, false);
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
     
 
