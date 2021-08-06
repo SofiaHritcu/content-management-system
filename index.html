@@ -74,11 +74,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="label-firstname" for="input-firstname">First name</label>
-                                    <input type="text" class="form-control" id="input-firstname" placeholder="eg. Conor" required>
+                                    <input type="text" class="form-control" id="input-firstname" placeholder="eg. Conor" required pattern="^[a-zA-Z]+">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="label-lastname" for="input-lastname">Last name</label>
-                                    <input type="text" class="form-control" id="input-lastname" placeholder="eg. McGregor" required>
+                                    <input type="text" class="form-control" id="input-lastname" placeholder="eg. McGregor" required pattern="^[a-zA-Z]+">
                                 </div>
                             </div>
                             <div class="form-group col-md-12 email">
@@ -90,7 +90,14 @@
                                 <label class="label-birthdate" for="input-birthdate">Birth date</label>
                             </div>
                             <div class="md-form md-outline input-with-post-icon  birthdate" >
-                                <input placeholder="Select date" type="date"  id="input-birthdate" class="form-control" required>
+                                <input 
+                                    placeholder="Select date" 
+                                    type="date"  
+                                    id="input-birthdate" 
+                                    class="form-control" 
+                                    min="1900-01-01" 
+                                    max="2005-12-31"
+                                    required>
                             </div>
 
                             
