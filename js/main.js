@@ -7,10 +7,16 @@ window.onload = function (){
     // });	
     $(document).ready(function() {
         $('#employees').DataTable({
-            "ordering": false,
+            "ordering": true,
             pageLength: 5,
-            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Todos"]]
-            // "sPaginationType": "bs_four_button"
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Todos"]],
+            "columnDefs":   [
+                                {
+                                "targets": [  5, 6 ],
+                                    orderable: false
+                                },
+                            ],
+        
         });
         } );
     

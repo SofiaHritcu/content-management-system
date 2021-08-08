@@ -26,10 +26,11 @@ function putDataLocalStorage() {
 
 function loadData() {
     const employeesLocallyJSON = JSON.parse(localStorage.getItem('employees'));
-    var employeesLocally = [];
+   var employeesLocally = [];
     employeesLocallyJSON.forEach(employee => {
         let e = new Employee(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
         employeesLocally.push(e);
     });
+
     return employeesLocally;
 };

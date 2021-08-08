@@ -77,11 +77,11 @@ text-decoration: none;
     font-size: 120%;
 }
 
-.in-select-gender {
+.in-select-gender, .custom-file-label::after {
     background-color: var(--background-color) !important;
 }
 
-.custom-select:focus {
+.custom-select:focus, .custom-file-label:focus {
     border-color: var(--border-color) !important;
     box-shadow: 0 0 0 0.2rem var(--background-lighter-color) !important;
 }
@@ -176,4 +176,37 @@ caption {
     color: var(--text-color);
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-size: 120%;
+}
+
+table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc, table.dataTable thead .sorting  {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+table.dataTable thead .sorting {
+    width: 50%;
+}
+
+.table .thead-dark th {
+    color: var(--text-color) !important;
+}
+
+th.sorting_disabled {
+    background-color: white !important;
+}
+
+.first-name-column, .last-name-column {
+    width: 15% !important;
+}
+
+.id-column {
+    width: 10% !important;
+}
+
+.email-column {
+    width: 18% !important;
+}
+
+.birth-date-column {
+    width: 16% !important;
 }
