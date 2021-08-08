@@ -2,6 +2,10 @@ let employees = localStorage.getItem('employees')
                     ? JSON.parse(localStorage.getItem('employees'))
                     : []
 
+let employeesFiltered = localStorage.getItem('employees')
+                            ? JSON.parse(localStorage.getItem('employees'))
+                            : []
+
 function addEmployee(firstName, lastName, email, birthdate, gender, image){
     var employee = new Employee(currentId, firstName, lastName, email, birthdate, gender, image);
     employees.push(employee);
@@ -34,3 +38,13 @@ function loadData() {
 
     return employeesLocally;
 };
+
+
+function filterEmployeeByGender(gender) {
+    if(gender === 'male' || gender === 'female'){
+        return employees.filter(employees => employees.genderEmployee === gender);
+    }
+    return employees;
+}
+
+

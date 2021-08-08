@@ -2,9 +2,6 @@ var currentId = 1;
 
 window.onload = function (){
     console.log("loading");
-    // document.getElementById("employees").dataTable({
-    //     "sPaginationType": "bs_four_button"
-    // });	
     $(document).ready(function() {
         $('#employees').DataTable({
             "ordering": true,
@@ -42,6 +39,9 @@ var inputBirthDate = document.getElementById('input-birthdate');
 const inputImage = document.getElementById('input-image');
 const genderSelected = inputGender.options[inputGender.selectedIndex];
 
+// filters elements
+const genderFilter = document.getElementById('filter-gender');
+
 
 // change button
 const change = document.getElementById('change');
@@ -59,13 +59,24 @@ function createTd( text ){
 
 // creates an id <td></td> element with given text and image
 function createTdId( id, image ){
-    console.log(image);
     var td =  document.createElement('td');
-    var tdText = document.createTextNode(id);
 
     var tdIdHTML = '<a href="javascript:;" class="avatar rounded-circle"><img class="img-avatar" width="20"height="20" alt="Image placeholder" src="'
     tdIdHTML += image;
     tdIdHTML += '"></a><br><p class="text-id">';
+    tdIdHTML += id;
+    tdIdHTML += '</p>';
+    td.innerHTML = tdIdHTML;
+
+    return td;
+}
+
+
+// creates an id <td></td> element with given text and no profile image
+function createTdIdNoProfile( id ){
+    var td =  document.createElement('td');
+
+    var tdIdHTML = '<a href="javascript:;" class="avatar rounded-circle"><img class="img-avatar-no-profile" src="/assets/user.png"></a><br><p class="text-id">';
     tdIdHTML += id;
     tdIdHTML += '</p>';
     td.innerHTML = tdIdHTML;
@@ -129,7 +140,12 @@ function getDate(oldFormatDate) {
 function addTableInstance (id, firstName, lastName, email, birthdate, gender, image) {
     var tr = document.createElement('tr');
 
-    var tdId = createTdId(id, image);
+    var tdId;
+    if ( image === 'no-profile-picture'){
+        tdId = createTdIdNoProfile(id);
+    }else{
+        tdId = createTdId(id, image);
+    }
     tdId.setAttribute("scope","row");
 
     var tdFirstName = createTd(firstName);
@@ -149,6 +165,7 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender, im
     document.querySelector("tbody").appendChild(tr);
 }
 
+
 // put data in table 
 function setTableInstances (employees) {
     employees.foreach( employee => {
@@ -163,7 +180,13 @@ form.addEventListener('submit', function (e) {
 
 
     if (inputImage.files.length == 0) {
-        console.log(`No files chosen`);
+        addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, 'no-profile-picture');
+        var employeesLocally = loadData();
+        document.querySelector("tbody").innerHTML = "";
+        employeesLocally.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        })
+        currentId ++;
         return;
     }
 
@@ -270,3 +293,12 @@ function previewFile() {
   }
     
 
+// filters
+
+genderFilter.addEventListener('change',() => {
+   let employeesAfterFilter =  filterEmployeeByGender(genderFilter.value);
+    document.querySelector("tbody").innerHTML = "";
+    employeesAfterFilter.forEach(employee =>{
+        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+    })
+})

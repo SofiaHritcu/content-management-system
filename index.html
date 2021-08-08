@@ -62,17 +62,30 @@
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col" class="id-column">#</th>
-                                <th scope="col" class="first-name-column" data-filter-control="input" text-center>First Name</th>
+                                <th scope="col" class="first-name-column" text-center>First Name</th>
                                 <th scope="col" class="last-name-column">Last Name</th>
                                 <th scope="col" class="email-column">Email</th>
                                 <th scope="col" class="birth-date-column">Birth Date</th>
-                                <th scope="col" class="gender-column" data-searchable="true" data-field="gender">Gender</th>
+                                <th scope="col" class="gender-column" data-field="gender">Gender</th>
                                 <th scope="col">Delete</th>
                             </thead>
                             <tbody>
                               
                             </tbody>
                           </table>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                            <button class="btn" disabled><i class="fas fa-filter"></i> Filters</button>
+                            <select class="custom-select select-secondary" id="filter-gender">
+                                <option value="">No gender filter</option>
+                                <option value="male">Male</option>
+                                <option class="option-gender" value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                        
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                         <form action="/upload/image">
