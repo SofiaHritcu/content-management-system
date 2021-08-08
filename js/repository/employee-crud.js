@@ -15,7 +15,6 @@ function addEmployee(firstName, lastName, email, birthdate, gender, image){
 function deleteEmployee(employeeToDeleteId){
     
     employees.forEach(employee => {
-        console.log(employee.idEmployee);
         if ( employee.idEmployee == employeeToDeleteId){
             employees.pop(employee);
         }
@@ -40,11 +39,26 @@ function loadData() {
 };
 
 
+//filters
 function filterEmployeeByGender(gender) {
     if(gender === 'male' || gender === 'female'){
-        return employees.filter(employees => employees.genderEmployee === gender);
+        employeesFiltered = employeesFiltered.filter(employees => employees.genderEmployee === gender);
     }
-    return employees;
+    return employeesFiltered;
+}
+
+function filterEmployeeByProfile(profile){
+    if(profile === 'no-profile-picture'){
+        employeesFiltered = employeesFiltered.filter(employees => employees.imageEmployee === profile);
+    }else if (profile === 'profile-picture'){
+        employeesFiltered = employeesFiltered.filter(employees => employees.imageEmployee !== 'no-profile-picture');
+    }
+    return employeesFiltered;
+}
+
+function filterEmployeeByBirthdate(start, end){
+        employeesFiltered = employeesFiltered.filter(employees => employees.birthDateEmployee >= start && employees.birthDateEmployee <= end);
+    return employeesFiltered;
 }
 
 

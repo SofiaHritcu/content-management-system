@@ -77,14 +77,56 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <hr>
-                            <button class="btn" disabled><i class="fas fa-filter"></i> Filters</button>
-                            <select class="custom-select select-secondary" id="filter-gender">
-                                <option value="">No gender filter</option>
-                                <option value="male">Male</option>
-                                <option class="option-gender" value="female">Female</option>
-                            </select>
+                            <div class=" my-3">
+                                <i class="fas fa-filter"></i>
+                                <span class="filters">Filters</span> <br>
+                            </div>
+                            <div class="filter">
+                                <label class="label-filter">Gender</label>
+                                <select class="custom-select select-secondary" id="filter-gender">
+                                    <option value="">No gender filter</option>
+                                    <option value="male">Male</option>
+                                    <option class="option-gender" value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="filter">
+                                <label class="label-filter">With/without profile picture</label>
+                                <select class="custom-select select-secondary" id="filter-profile">
+                                    <option value="">No profile filter</option>
+                                    <option value="profile-picture">With Profile</option>
+                                    <option class="option-gender" value="no-profile-picture">Without profile</option>
+                                </select>
+                            </div>
+                            <div class="filter">
+                                <label class="label-filter">With birthdate between</label>
+                                <div class="md-form md-outline input-with-post-icon  birthdate" >
+                                    <label class="label-filter">Starting with ...</label>
+                                    <input 
+                                        placeholder="Starting with ..." 
+                                        type="date"  
+                                        id="input-birthdate-start" 
+                                        class="form-control" 
+                                        min="1900-01-01" 
+                                        max="2005-12-31"
+                                        required>
+                                </div>
+                                <div class="md-form md-outline input-with-post-icon  birthdate" >
+                                    <label class="label-filter">Ending with ...</label>
+                                    <input 
+                                        placeholder="Ending with ..." 
+                                        type="date"  
+                                        id="input-birthdate-end" 
+                                        class="form-control" 
+                                        min="1900-01-01" 
+                                        max="2005-12-31"
+                                        required>
+                                </div>
+                            </div>
+                            <button class="btn" onclick="deleteFilters()"><i class="fas fa-trash-alt"></i> Delete all filters</button><br>
+
                         </div>
                     </div>
+                   
                         
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
