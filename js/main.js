@@ -103,12 +103,15 @@ function eraseEmployee(employee) {
   }
 
 
-// creates an <td></td> element with delete button
-function createTdDelete(){
+
+
+// creates an <td></td> element with delete and edit button
+function createTdActions(){
     td =  document.createElement('td');
     var tdText = document.createTextNode('');
     td.appendChild(tdText);
     td.innerHTML = '<button class="btn" onclick="eraseEmployee(this)"><i class="fa fa-trash"></i></button>'
+    td.innerHTML += '<button class="btn" onclick="editEmployee(this)"><i class="fa fa-edit"></i></button>'
     td.appendChild(tdText);
     return td;
 }
@@ -157,7 +160,7 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender, im
     var tdEmail = createTd(email);
     var tdBirthDate = createTd(birthdate);
     var tdGender = createTd(gender);
-    var tdDelete = createTdDelete();
+    var tdDelete = createTdActions();
 
     tr.appendChild(tdId);
     tr.appendChild(tdFirstName);
