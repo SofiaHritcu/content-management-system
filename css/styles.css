@@ -129,7 +129,7 @@ text-decoration: none;
     padding-left: 0 !important;
 }
 
-.birthdate {
+.birthdate, .filterdate {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
@@ -238,4 +238,8 @@ th.sorting_disabled {
 
 hr {
     opacity: 0.5;
+}
+
+.hidden-alert {
+    display: none;
 }

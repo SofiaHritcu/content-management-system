@@ -22,6 +22,30 @@ function deleteEmployee(employeeToDeleteId){
     putDataLocalStorage();
 }
 
+function updateEmployee(id, firstName, lastName, email, birthdate, gender, image){
+    employees.forEach(employee => {
+        if(employee.idEmployee == id){
+            employee.firstNameEmployee = firstName;
+            employee.lastNameEmployee = lastName;
+            employee.emailEmployee = email;
+            employee.birthDateEmployee = birthdate;
+            employee.genderEmployee = gender;
+            employee.imageEmployee = image;
+        }
+    })
+    putDataLocalStorage();
+}
+
+function getEmployeeById(idEmployee) {
+    
+    let employeeFound = employees.filter( employee => employee.idEmployee == idEmployee )
+    if (employeeFound.length !== 0){
+        return employeeFound[0]
+    }else{
+        return null;
+    }
+}
+
 function putDataLocalStorage() {
     localStorage.clear()
     localStorage.setItem('employees', JSON.stringify(employees))

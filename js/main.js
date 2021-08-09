@@ -91,7 +91,6 @@ function createTdIdNoProfile( id ){
 // deletion of employee
 function eraseEmployee(employee) {
     const employeeToDeleteId = employee.parentNode.parentNode.firstChild.textContent;
-    var indexSelectedEmployee = employee.parentNode.parentNode.rowIndex ;
 
     deleteEmployee(employeeToDeleteId);
     var employeesLocally = loadData();
@@ -99,9 +98,31 @@ function eraseEmployee(employee) {
     employeesLocally.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
-    document.getElementById("employees").deleteRow(indexSelectedEmployee);
   }
 
+
+// update employee
+function editEmployee(employee) {    
+    const employeeToEditId = employee.parentNode.parentNode.firstChild.textContent;
+    console.log(employee.parentNode.parentNode.rowIndex);
+    const preview = document.getElementById("profile-picture-preview");
+    var employeeToUpdate = getEmployeeById(employeeToEditId);
+    console.log(employeeToUpdate);
+    if( employeeToUpdate !== null){
+        inputFirstName.value = employeeToUpdate.firstNameEmployee;
+        inputLastName.value = employeeToUpdate.lastNameEmployee;
+        inputEmail.value = employeeToUpdate.emailEmployee;
+        changeBirthdateInput(employeeToUpdate.birthDateEmployee);
+        inputGender.value = employeeToUpdate.genderEmployee;
+        if(employeeToUpdate.imageEmployee !== 'no-profile-picture'){
+            preview.src = employeeToUpdate.imageEmployee;
+        }else{
+            preview.src="/assets/user.png"
+        }
+        document.querySelector('.submit-button').innerHTML = '<button type="submit" class="btn submit update">Update</button>';
+        localStorage.setItem('idEmployeeToUpdate',employeeToUpdate.idEmployee);
+    }
+}
 
 
 
@@ -184,8 +205,18 @@ function setTableInstances (employees) {
 // add event on form submit
 form.addEventListener('submit', function (e) {
     e.preventDefault()
+    if(document.querySelector('.submit-button').textContent.indexOf('Update') !== 0){
+        addEmployeeSubmit();
+        document.getElementById('added-success').setAttribute('class','alert alert-success my-2');
+    }else{
+        updateEmployeeSubmit();
+        document.getElementById('updated-success').setAttribute('class','alert alert-success my-2');
+    }
+
+})
 
 
+function addEmployeeSubmit(){
     if (inputImage.files.length == 0) {
         addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, 'no-profile-picture');
         var employeesLocally = loadData();
@@ -194,6 +225,11 @@ form.addEventListener('submit', function (e) {
             addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
         })
         currentId ++;
+
+        // reset initial values for form 
+        form.reset();
+        document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+        onChange();
         return;
     }
 
@@ -208,7 +244,6 @@ form.addEventListener('submit', function (e) {
         reader.readAsDataURL(file);
     });
 
-    console.log(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value);
 
     resultImage.then(function(result) {
         imageBase64 = result;
@@ -220,10 +255,61 @@ form.addEventListener('submit', function (e) {
             addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
         })
         currentId ++;
+
+        // reset initial values for form 
         form.reset();
+        document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+        onChange();
+    });
+}
+
+function updateEmployeeSubmit(){
+    console.log('update submit');
+    const idEmployeeToBeUpdated = localStorage.getItem('idEmployeeToUpdate');
+    let employeeToBeUpdated = getEmployeeById(idEmployeeToBeUpdated);
+    if (inputImage.files.length == 0) {
+        updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, employeeToBeUpdated.imageEmployee);
+        var employeesLocally = loadData();
+        document.querySelector("tbody").innerHTML = "";
+        employeesLocally.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        })
+
+        // reset initial values for form 
+        form.reset();
+        document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+        onChange();
+
+        return;
+    }
+
+    const file = inputImage.files[0];
+
+    var imageBase64 ='';
+
+    var resultImage = new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function() { resolve(reader.result); };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
     });
 
-  })
+
+    resultImage.then(function(result) {
+        imageBase64 = result;
+        updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64);
+        var employeesLocally = loadData();
+        document.querySelector("tbody").innerHTML = "";
+        employeesLocally.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        })
+
+        // reset initial values for form 
+        form.reset();
+        document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+        onChange();
+    });
+}
 
 
 // function for changing format of birthdate by replacing the date input with a text input and a button 
@@ -283,6 +369,33 @@ inputBirthDate.addEventListener('change', function(e){
     firstPartInnerHTML += '<div class="change-button"> <button class="btn changeBirthDate"  onclick="onChange()" id="change">Change Birth Date</button></div>'
     document.querySelector(".birthdate").innerHTML = firstPartInnerHTML;
 })
+
+function changeBirthdateInput(date){
+    const months = {
+        0: 'January',
+        1: 'February',
+        2: 'March',
+        3: 'April',
+        4: 'May',
+        5: 'June',
+        6: 'July',
+        7: 'August',
+        8: 'September',
+        9: 'October',
+        10: 'November',
+        11: 'December'
+      }
+    var firstPartInnerHTML = '<input placeholder="'
+    var birthdate = new Date(date);
+    var year = birthdate.getFullYear();
+    var month = months[birthdate.getMonth()];
+    var day = birthdate.getDate();
+    firstPartInnerHTML += day+' ' + month + ' ' + year;
+    currentBirthDate = date;
+    firstPartInnerHTML += '" type="text" readonly id="input-birthdate" class="form-control">'
+    firstPartInnerHTML += '<div class="change-button"> <button class="btn changeBirthDate"  onclick="onChange()" id="change">Change Birth Date</button></div>'
+    document.querySelector(".birthdate").innerHTML = firstPartInnerHTML;
+}
 
 // preview the image  
 function previewFile() {
