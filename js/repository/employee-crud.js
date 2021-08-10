@@ -9,13 +9,14 @@ async function deleteEmployee(employeeToDeleteId){
     await deleteEmployeeFromFirestore(employeeToDeleteId);
 }
 
-function updateEmployee(id, firstName, lastName, email, birthdate, gender, image){
-    updateEmployeeLS();
+async function updateEmployee(id, firstName, lastName, email, birthdate, gender, image){
+    // updateEmployeeLS(id, firstName, lastName,email, birthdate, gender, image );
+    await upadateEmployeeFromFirestore(id, firstName, lastName,email, birthdate, gender, image );
 }
 
 function getEmployeeById(idEmployee) {
-    
-    return getEmployeeByIdLS(idEmployee);
+    // return getEmployeeByIdLS(idEmployee);
+    return getEmployeeByIdFirestore(idEmployee);
 }
 
 function getNumberOfEmployees(){

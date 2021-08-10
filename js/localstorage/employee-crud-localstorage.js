@@ -56,7 +56,7 @@ function putDataLS() {
     localStorage.setItem('employees', JSON.stringify(employees))
 }
 
-async function getEmployeesLS() {
+function getEmployeesLS() {
     const employeesLocallyJSON = JSON.parse(localStorage.getItem('employees'));
     var employeesLocally = [];
     employeesLocallyJSON.forEach(employee => {
@@ -64,8 +64,15 @@ async function getEmployeesLS() {
         employeesLocally.push(e);
     });
     return employeesLocally;
-};
+}
 
+function setEmployeeIdToBeUpdatedLS(idEmployeeToBeUpdated){
+    localStorage.setItem('idEmployeeToUpdate',idEmployeeToBeUpdated);
+}
+
+function getEmployeeByIdToBeUpdatedLS(){
+    return localStorage.getItem('idEmployeeToUpdate');
+}
 
 //filters
 function filterEmployeeByGenderLS(gender) {

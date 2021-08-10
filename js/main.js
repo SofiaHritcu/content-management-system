@@ -119,12 +119,10 @@ async function eraseEmployee(employee) {
 
 
 // update employee
-function editEmployee(employee) {    
+async function editEmployee(employee) {    
     const employeeToEditId = employee.parentNode.parentNode.firstChild.textContent;
-    console.log(employee.parentNode.parentNode.rowIndex);
     const preview = document.getElementById("profile-picture-preview");
-    var employeeToUpdate = getEmployeeById(employeeToEditId);
-    console.log(employeeToUpdate);
+    var employeeToUpdate = await getEmployeeById(employeeToEditId);
     if( employeeToUpdate !== null){
         inputFirstName.value = employeeToUpdate.firstNameEmployee;
         inputLastName.value = employeeToUpdate.lastNameEmployee;
@@ -137,7 +135,8 @@ function editEmployee(employee) {
             preview.src="/assets/user.png"
         }
         document.querySelector('.submit-button').innerHTML = '<button type="submit" class="btn submit update">Update</button>';
-        localStorage.setItem('idEmployeeToUpdate',employeeToUpdate.idEmployee);
+        // setEmployeeIdToBeUpdatedLS(employeeToUpdate.idEmployee);
+        await setEmployeeIdToBeUpdatedFirestore(employeeToUpdate.idEmployee);
     }
 }
 
@@ -309,13 +308,15 @@ async function addEmployeeSubmit(){
     });
 }
 
-function updateEmployeeSubmit(){
+async function updateEmployeeSubmit(){
     console.log('update submit');
-    const idEmployeeToBeUpdated = localStorage.getItem('idEmployeeToUpdate');
-    let employeeToBeUpdated = getEmployeeById(idEmployeeToBeUpdated);
+    // const idEmployeeToBeUpdated = getEmployeeByIdToBeUpdatedLS();
+    const idEmployeeToBeUpdated = await getEmployeeIdToBeUpdatedFirestore();
+    console.log(idEmployeeToBeUpdated);
+    let employeeToBeUpdated = await getEmployeeById(idEmployeeToBeUpdated);
     if (inputImage.files.length == 0) {
-        updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, employeeToBeUpdated.imageEmployee);
-        var employeesLocally = loadData();
+        await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, employeeToBeUpdated.imageEmployee);
+        var employeesLocally = await loadData();
         document.querySelector("tbody").innerHTML = "";
         employeesLocally.forEach(employee =>{
             addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -341,9 +342,9 @@ function updateEmployeeSubmit(){
     });
 
 
-    resultImage.then(function(result) {
+    resultImage.then(async function(result) {
         imageBase64 = result;
-        updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64);
+        await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64);
         var employeesLocally = loadData();
         document.querySelector("tbody").innerHTML = "";
         employeesLocally.forEach(employee =>{
