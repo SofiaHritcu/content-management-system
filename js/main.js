@@ -464,8 +464,9 @@ function previewFile() {
 
 // filters
 
-genderFilter.addEventListener('change',() => {
-   let employeesAfterFilter =  filterEmployeeByGender(genderFilter.value);
+genderFilter.addEventListener('change',async () => {
+    // let employeesAfterFilter =  filterEmployeeByGenderLS(genderFilter.value);
+    let employeesAfterFilter =  await filterEmployeeByGenderFirestore(genderFilter.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -474,10 +475,10 @@ genderFilter.addEventListener('change',() => {
 
 profileFilter.addEventListener('change',() => {
     let employeesAfterFilter =  filterEmployeeByProfile(profileFilter.value);
-     document.querySelector("tbody").innerHTML = "";
-     employeesAfterFilter.forEach(employee =>{
-         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-     })
+    document.querySelector("tbody").innerHTML = "";
+    employeesAfterFilter.forEach(employee =>{
+        addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+    })
  })
 
  birthdateFilterEnd.addEventListener('change',() => {
@@ -497,3 +498,18 @@ profileFilter.addEventListener('change',() => {
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
  }
+
+ // sortings
+
+async function sortDataBy(column, field){
+    console.log(column);
+    const col = document.querySelector("."+column);
+    const sorting = col.getAttribute('class');
+    console.log("in sort", sorting);
+    if(sorting.indexOf('sorting_asc') !== -1 || sorting.indexOf('sorting') !== -1){
+        console.log("in sort-asc");
+        await sortFirestore(field,'asc');
+    }else if (sorting.indexOf('sorting_desc') !== -1){
+        await sortFirestore(field,'desc');
+    }
+}

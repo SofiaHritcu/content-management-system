@@ -66,6 +66,17 @@ async function getMaxId(){
 
 }
 
+function getEmployeesArray(asyncResultEmployees) {
+    var employees = [];
+    asyncResultEmployees.forEach((employee) => {
+        let id = employee.id;
+        let fields = employee.data();
+        let e = new Employee(id, fields.firstName, fields.lastName, fields.email, fields.birthDate, fields.gender, fields.image);
+        employees.push(e);
+    });
+    return employees;
+}
+
 async function setEmployeeIdToBeUpdatedFirestore(idEmployeeToBeUpdated){
     await db.collection("employeeToUpdate")
                             .doc("idUpdate")
@@ -76,3 +87,39 @@ async function getEmployeeIdToBeUpdatedFirestore(){
     var idEmployeeToUpdateFirebase = await db.collection("employeeToUpdate").doc("idUpdate").get();
     return idEmployeeToUpdateFirebase.data().id;
 }
+
+// sorting
+
+async function sortFirestore(field, order){
+    var employeesFirebase = await db.collection("employees").orderBy(field, order).get();
+    let = employees = getEmployeesArray(employeesFirebase);
+    console.log("Employees sorted by", field, "in", order, "order", employees);
+}
+
+
+//filters
+async function filterEmployeeByGenderFirestore(gender) {
+    if(gender === ""){
+        return getEmployeesFromFirestore();
+    }
+    var employeesFirebase = await db.collection("employees")
+                                    .where("gender", "==", gender)
+                                    .get();                                
+    return getEmployeesArray(employeesFirebase);
+}
+
+function filterEmployeeByProfileFirestore(profile){
+    if(profile === 'no-profile-picture'){
+        employeesFiltered = employeesFiltered.filter(employees => employees.imageEmployee === profile);
+    }else if (profile === 'profile-picture'){
+        employeesFiltered = employeesFiltered.filter(employees => employees.imageEmployee !== 'no-profile-picture');
+    }
+    return employeesFiltered;
+}
+
+function filterEmployeeByBirthdateFirestore(start, end){
+        employeesFiltered = employeesFiltered.filter(employees => employees.birthDateEmployee >= start && employees.birthDateEmployee <= end);
+    return employeesFiltered;
+}
+
+
