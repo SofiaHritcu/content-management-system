@@ -1,8 +1,11 @@
+
 var currentId = 1;
 
 window.onload = async function (){
     console.log("loading");
-    if( getNumberOfEmployees() !== 0){
+    let numberEmployees = await getNumberOfEmployees();
+    console.log(numberEmployees);
+    if( numberEmployees !== 0){
         // let employeesLocally = loadData();
         // console.log(employeesLocally);
         // employeesLocally.forEach(employee =>{
@@ -13,8 +16,8 @@ window.onload = async function (){
         // getNumberOfEmployees().then(function (lengthEmployees) { 
         //     currentId = lengthEmployees + 1;})
         getMaxId().then(function (maxId) {
-            console.log(maxId);
             currentId = maxId + 1;
+            console.log('currentId: '+currentId);
         })
         employeesLocally = await loadData();
         console.log(employeesLocally);
@@ -23,7 +26,9 @@ window.onload = async function (){
             addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
         });
     } else {
+        currentId = 1;
         document.getElementById('table-title').innerHTML = "NO EMPLOYEES YET";
+        console.log('currentId: '+currentId);
     }
     
     $(document).ready(function() {
@@ -127,7 +132,8 @@ async function editEmployee(employee) {
         inputFirstName.value = employeeToUpdate.firstNameEmployee;
         inputLastName.value = employeeToUpdate.lastNameEmployee;
         inputEmail.value = employeeToUpdate.emailEmployee;
-        changeBirthdateInput(employeeToUpdate.birthDateEmployee);
+        console.log(moment(employeeToUpdate.birthDateEmployee.toDate()).format("MM/DD/YYYY"));
+        changeBirthdateInput(moment(employeeToUpdate.birthDateEmployee.toDate()).format("MM/DD/YYYY"));
         inputGender.value = employeeToUpdate.genderEmployee;
         if(employeeToUpdate.imageEmployee !== 'no-profile-picture'){
             preview.src = employeeToUpdate.imageEmployee;
@@ -157,7 +163,7 @@ function createTdActions(){
 
 
 // get a date in default format in required format of day month year
-function getDate(oldFormatDate) {
+function getDateFromOld(oldFormatDate) {
     const months = {
         0: 'January',
         1: 'February',
@@ -176,6 +182,8 @@ function getDate(oldFormatDate) {
     var year = date.getFullYear();
     var month = months[date.getMonth()];
     var day = date.getDate();
+    console.log(day+' ' + month + ' ' + year);
+    console.log(oldFormatDate);
     return day+' ' + month + ' ' + year;
 }
 
@@ -195,7 +203,9 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender, im
     var tdFirstName = createTd(firstName);
     var tdLastName = createTd(lastName);
     var tdEmail = createTd(email);
-    var tdBirthDate = createTd(birthdate);
+    console.log(birthdate);
+    var tdBirthDate = createTd(moment(birthdate.toDate()).format("DD MMMM YYYY"));
+    // var tdBirthDate = createTd(birthdate);
     var tdGender = createTd(gender);
     var tdDelete = createTdActions();
 
@@ -234,7 +244,8 @@ form.addEventListener('submit', async function (e) {
 
 async function addEmployeeSubmit(){
     if (inputImage.files.length == 0) {
-        await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, 'no-profile-picture')
+        console.log(inputBirthDate.value);
+        await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, 'no-profile-picture')
         loadData().then(employeesLocally => {
             console.log(employeesLocally);
             document.querySelector("tbody").innerHTML = "";
@@ -248,7 +259,7 @@ async function addEmployeeSubmit(){
             onChange();
             return;
         })
-        
+        return ;
         // var employeesLocally = loadData();
         // document.querySelector("tbody").innerHTML = "";
         // employeesLocally.forEach(employee =>{
@@ -277,8 +288,8 @@ async function addEmployeeSubmit(){
 
     resultImage.then(async function(result) {
         imageBase64 = result;
-        console.log(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value);
-        await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64)
+        console.log(inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value);
+        await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, imageBase64)
         loadData().then(employeesLocally => {
             console.log(employeesLocally);
             document.querySelector("tbody").innerHTML = "";
@@ -315,7 +326,8 @@ async function updateEmployeeSubmit(){
     console.log(idEmployeeToBeUpdated);
     let employeeToBeUpdated = await getEmployeeById(idEmployeeToBeUpdated);
     if (inputImage.files.length == 0) {
-        await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, employeeToBeUpdated.imageEmployee);
+        console.log(inputBirthDate.value + moment(inputBirthDate.value).format("DD MM YYYY"));
+        await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, employeeToBeUpdated.imageEmployee);
         var employeesLocally = await loadData();
         document.querySelector("tbody").innerHTML = "";
         employeesLocally.forEach(employee =>{
@@ -344,7 +356,7 @@ async function updateEmployeeSubmit(){
 
     resultImage.then(async function(result) {
         imageBase64 = result;
-        await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64);
+        await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, imageBase64);
         var employeesLocally = loadData();
         document.querySelector("tbody").innerHTML = "";
         employeesLocally.forEach(employee =>{
@@ -380,7 +392,7 @@ function onChange (){
             11: 'December'
           }
         var firstPartInnerHTML = '<input placeholder="';
-        firstPartInnerHTML += getDate(inputBirthDate.value);
+        firstPartInnerHTML += getDateFromOld(inputBirthDate.value);
         firstPartInnerHTML += '" type="text" readonly id="input-birthdate" class="form-control">'
         firstPartInnerHTML += '<div class="change-button"> <button class="btn changeBirthDate"  onclick="onChange()" id="change">Change Birth Date</button></div>'
         document.querySelector(".birthdate").innerHTML = firstPartInnerHTML;
@@ -411,6 +423,8 @@ inputBirthDate.addEventListener('change', function(e){
     var month = months[birthdate.getMonth()];
     var day = birthdate.getDate();
     firstPartInnerHTML += day+' ' + month + ' ' + year;
+    console.log(day+' ' + month + ' ' + year);
+    console.log(birthdate);
     currentBirthDate = inputBirthDate.value;
     firstPartInnerHTML += '" type="text" readonly id="input-birthdate" class="form-control">'
     firstPartInnerHTML += '<div class="change-button"> <button class="btn changeBirthDate"  onclick="onChange()" id="change">Change Birth Date</button></div>'
@@ -431,7 +445,7 @@ function changeBirthdateInput(date){
         9: 'October',
         10: 'November',
         11: 'December'
-      }
+    }
     var firstPartInnerHTML = '<input placeholder="'
     var birthdate = new Date(date);
     var year = birthdate.getFullYear();

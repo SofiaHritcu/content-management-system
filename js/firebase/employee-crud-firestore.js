@@ -9,7 +9,8 @@ function addEmployeesToFirestore(employees) {
 }
 
 // add one employee to firestore
-async function addEmployeeToFirestore(employee) {    
+async function addEmployeeToFirestore(employee) { 
+    employee.birthDateEmployee = new Date(employee.birthdate);   
     await db.collection("employees").doc(employee.idEmployee+"")
                                 .withConverter(employeeConverter)
                                 .set(employee);
@@ -23,6 +24,7 @@ async function deleteEmployeeFromFirestore(idEmployee) {
 
 // update one employee from firestore
 async function upadateEmployeeFromFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee) { 
+    birthDateEmployee = new Date(birthDateEmployee);   ;
     await db.collection("employees").doc(id+"")
                             .update({
                                 firstName: firstNameEmployee,
@@ -122,6 +124,7 @@ async function filterEmployeeByProfileFirestore(profile){
 async function filterEmployeeByBirthdateFirestore(start, end){ 
     let startDate = new Date(start);
     let endDate = new Date(end);
+    console.log(startDate,' ',endDate, typeof(startDate));
     let employeesFirebase = await db.collection("employees")
                                 .where("birthDate", ">=", startDate)
                                 .where("birthDate", "<=", endDate)
