@@ -9,10 +9,16 @@ function addEmployeesToFirestore(employees) {
 }
 
 // add one employee to firestore
-function addEmployeeToFirestore(employee) {    
-        db.collection("employees").doc(employee.idEmployee+"")
+async function addEmployeeToFirestore(employee) {    
+    await db.collection("employees").doc(employee.idEmployee+"")
                                 .withConverter(employeeConverter)
                                 .set(employee);
+}
+
+// delete one employee from firestore
+async function deleteEmployeeFromFirestore(idEmployee) { 
+    await db.collection("employees").doc(idEmployee+"")
+                            .delete()
 }
 
 // get all of the employees from firestore
@@ -29,7 +35,13 @@ async function  getEmployeesFromFirestore(){
 }
 
 
-async function getNumberOfEmployeesFromFirestore (){
+async function getNumberOfEmployeesFromFirestore(){
     let employees = await db.collection("employees").get();
     return employees.docs.length;
+}
+
+async function getMaxId(){
+    let employees = await getEmployeesFromFirestore();
+    return Math.max.apply(Math, employees.map(function(employee) { return employee.idEmployee; }))
+
 }

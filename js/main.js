@@ -1,7 +1,31 @@
 var currentId = 1;
 
-window.onload = function (){
+window.onload = async function (){
     console.log("loading");
+    if( getNumberOfEmployees() !== 0){
+        // let employeesLocally = loadData();
+        // console.log(employeesLocally);
+        // employeesLocally.forEach(employee =>{
+        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        // });
+
+        // currentId = employeesLocally.length + 1;
+        // getNumberOfEmployees().then(function (lengthEmployees) { 
+        //     currentId = lengthEmployees + 1;})
+        getMaxId().then(function (maxId) {
+            console.log(maxId);
+            currentId = maxId + 1;
+        })
+        employeesLocally = await loadData();
+        console.log(employeesLocally);
+        employees = employeesLocally;
+        employeesLocally.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        });
+    } else {
+        document.getElementById('table-title').innerHTML = "NO EMPLOYEES YET";
+    }
+    
     $(document).ready(function() {
         $('#employees').DataTable({
             "ordering": true,
@@ -15,29 +39,9 @@ window.onload = function (){
                             ],
         
         });
-        } );
+    } );
     
     
-    if( getNumberOfEmployees() !== 0){
-        // let employeesLocally = loadData();
-        // console.log(employeesLocally);
-        // employeesLocally.forEach(employee =>{
-        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-        // });
-
-        // currentId = employeesLocally.length + 1;
-        getNumberOfEmployees().then(function (lengthEmployees) { currentId = lengthEmployees + 1;})
-        
-        loadData().then(employeesLocally => {
-            console.log(employeesLocally);
-            employees = employeesLocally;
-            employeesLocally.forEach(employee =>{
-                addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-            });
-        })
-    } else {
-        document.getElementById('table-title').innerHTML = "NO EMPLOYEES YET";
-    }
 }
 
 // retrieve data from input form 
@@ -100,11 +104,13 @@ function createTdIdNoProfile( id ){
 }
 
 // deletion of employee
-function eraseEmployee(employee) {
+async function eraseEmployee(employee) {
+    console.log('on delete');
     const employeeToDeleteId = employee.parentNode.parentNode.firstChild.textContent;
 
-    deleteEmployee(employeeToDeleteId);
-    var employeesLocally = loadData();
+    await deleteEmployee(employeeToDeleteId);
+    var employeesLocally = await loadData();
+    console.log(employeesLocally);
     document.querySelector("tbody").innerHTML = "";
     employeesLocally.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -214,23 +220,22 @@ function setTableInstances (employees) {
 
 
 // add event on form submit
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', async function (e) {
     e.preventDefault()
     if(document.querySelector('.submit-button').textContent.indexOf('Update') !== 0){
-        addEmployeeSubmit();
+        await addEmployeeSubmit();
         document.getElementById('added-success').setAttribute('class','alert alert-success my-2');
     }else{
-        updateEmployeeSubmit();
+        await updateEmployeeSubmit();
         document.getElementById('updated-success').setAttribute('class','alert alert-success my-2');
     }
 
 })
 
 
-function addEmployeeSubmit(){
+async function addEmployeeSubmit(){
     if (inputImage.files.length == 0) {
-        addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, 'no-profile-picture');
-        
+        await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, 'no-profile-picture')
         loadData().then(employeesLocally => {
             console.log(employeesLocally);
             document.querySelector("tbody").innerHTML = "";
@@ -271,11 +276,10 @@ function addEmployeeSubmit(){
     });
 
 
-    resultImage.then(function(result) {
+    resultImage.then(async function(result) {
         imageBase64 = result;
         console.log(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value);
-        addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64);
-        
+        await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64)
         loadData().then(employeesLocally => {
             console.log(employeesLocally);
             document.querySelector("tbody").innerHTML = "";
@@ -288,6 +292,8 @@ function addEmployeeSubmit(){
             document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
             onChange();
         })
+        
+        
         
         // var employeesLocally = loadData();
         // document.querySelector("tbody").innerHTML = "";
