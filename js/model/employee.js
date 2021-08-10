@@ -64,4 +64,24 @@ class Employee {
     set image (image) {
         this.imageEmployee = image;
     }
+
+    
 }
+
+// Firestore data converter
+var employeeConverter = {
+    toFirestore: function(employee) {
+        return {
+                firstName: employee.firstNameEmployee,
+                lastName: employee.lastNameEmployee,
+                email: employee.emailEmployee,
+                gender: employee.genderEmployee,
+                birthDate: employee.birthDateEmployee,
+                image: employee.imageEmployee
+            };
+    },
+    fromFirestore: function(snapshot, options){
+        const data = snapshot.data(options);
+        return new Employee( data.firstName, data.lastName, data.email, data.gender, data.birthDate, data.image);
+    }
+};

@@ -15,8 +15,4 @@ firebase.analytics();
 // initialize firestore
 var db = firebase.firestore();
 
-export default db;
 
-export {
-  db,
-};

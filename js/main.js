@@ -18,12 +18,23 @@ window.onload = function (){
         } );
     
     
-    if( localStorage.getItem('employees') !== null){
-        var employeesLocally = loadData() ;
-        employeesLocally.forEach(employee =>{
-            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-        });
-        currentId = employeesLocally.length + 1;
+    if( getNumberOfEmployees() !== 0){
+        // let employeesLocally = loadData();
+        // console.log(employeesLocally);
+        // employeesLocally.forEach(employee =>{
+        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        // });
+
+        // currentId = employeesLocally.length + 1;
+        getNumberOfEmployees().then(function (lengthEmployees) { currentId = lengthEmployees + 1;})
+        
+        loadData().then(employeesLocally => {
+            console.log(employeesLocally);
+            employees = employeesLocally;
+            employeesLocally.forEach(employee =>{
+                addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+            });
+        })
     } else {
         document.getElementById('table-title').innerHTML = "NO EMPLOYEES YET";
     }
@@ -219,18 +230,33 @@ form.addEventListener('submit', function (e) {
 function addEmployeeSubmit(){
     if (inputImage.files.length == 0) {
         addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, 'no-profile-picture');
-        var employeesLocally = loadData();
-        document.querySelector("tbody").innerHTML = "";
-        employeesLocally.forEach(employee =>{
-            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        
+        loadData().then(employeesLocally => {
+            console.log(employeesLocally);
+            document.querySelector("tbody").innerHTML = "";
+            employeesLocally.forEach(employee =>{
+                addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+            })
+            currentId ++;
+            // reset initial values for form 
+            form.reset();
+            document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+            onChange();
+            return;
         })
-        currentId ++;
+        
+        // var employeesLocally = loadData();
+        // document.querySelector("tbody").innerHTML = "";
+        // employeesLocally.forEach(employee =>{
+        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        // })
+        // currentId ++;
 
         // reset initial values for form 
-        form.reset();
-        document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
-        onChange();
-        return;
+        // form.reset();
+        // document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+        // onChange();
+        // return;
     }
 
     const file = inputImage.files[0];
@@ -249,17 +275,31 @@ function addEmployeeSubmit(){
         imageBase64 = result;
         console.log(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value);
         addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, getDate(inputBirthDate.value), inputGender.value, imageBase64);
-        var employeesLocally = loadData();
-        document.querySelector("tbody").innerHTML = "";
-        employeesLocally.forEach(employee =>{
-            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        
+        loadData().then(employeesLocally => {
+            console.log(employeesLocally);
+            document.querySelector("tbody").innerHTML = "";
+            employeesLocally.forEach(employee =>{
+                addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+            })
+            currentId ++;
+            // reset initial values for form 
+            form.reset();
+            document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+            onChange();
         })
-        currentId ++;
+        
+        // var employeesLocally = loadData();
+        // document.querySelector("tbody").innerHTML = "";
+        // employeesLocally.forEach(employee =>{
+        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        // })
+        // currentId ++;
 
-        // reset initial values for form 
-        form.reset();
-        document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
-        onChange();
+        // // reset initial values for form 
+        // form.reset();
+        // document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+        // onChange();
     });
 }
 
