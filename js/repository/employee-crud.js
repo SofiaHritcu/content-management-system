@@ -36,16 +36,19 @@ async function loadData() {
 
 
 //filters
-function filterEmployeeByGender(gender) {
-    return filterEmployeeByGenderLS(gender);
+async function filterEmployeeByGender(gender) {
+    // return filterEmployeeByGenderLS(gender);
+    return await filterEmployeeByGenderFirestore(gender);
 }
 
-function filterEmployeeByProfile(profile){
-    return filterEmployeeByProfileLS(profile);
+async function filterEmployeeByProfile(profile){
+    // return filterEmployeeByProfileLS(profile);
+    return await filterEmployeeByProfileFirestore(profile);
 }
 
-function filterEmployeeByBirthdate(start, end){
-    return filterEmployeeByBirthdateLS(start, end);
+async function filterEmployeeByBirthdate(start, end){
+    // return filterEmployeeByBirthdateLS(start, end);
+    return await filterEmployeeByBirthdateFirestore(start, end);
 }
 
 

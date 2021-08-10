@@ -29,8 +29,8 @@ window.onload = async function (){
     $(document).ready(function() {
         $('#employees').DataTable({
             "ordering": true,
-            pageLength: 5,
-            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Todos"]],
+            pageLength: 4,
+            lengthMenu: [[4, 8, 16, -1], [4, 8, 16, "All"]],
             "columnDefs":   [
                                 {
                                 "targets": [  5, 6 ],
@@ -466,7 +466,7 @@ function previewFile() {
 
 genderFilter.addEventListener('change',async () => {
     // let employeesAfterFilter =  filterEmployeeByGenderLS(genderFilter.value);
-    let employeesAfterFilter =  await filterEmployeeByGenderFirestore(genderFilter.value);
+    let employeesAfterFilter =  await filterEmployeeByGender(genderFilter.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -475,15 +475,15 @@ genderFilter.addEventListener('change',async () => {
 
 profileFilter.addEventListener('change',async () => {
     // let employeesAfterFilter =  filterEmployeeByProfile(profileFilter.value);
-    let employeesAfterFilter =  await filterEmployeeByProfileFirestore(profileFilter.value);
+    let employeesAfterFilter =  await filterEmployeeByProfile(profileFilter.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
  })
 
- birthdateFilterEnd.addEventListener('change',() => {
-    let employeesAfterFilter =  filterEmployeeByBirthdate(birthdateFilterStart, birthdateFilterEnd);
+ birthdateFilterEnd.addEventListener('change',async () => {
+    let employeesAfterFilter =  await filterEmployeeByBirthdate(birthdateFilterStart.value, birthdateFilterEnd.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);

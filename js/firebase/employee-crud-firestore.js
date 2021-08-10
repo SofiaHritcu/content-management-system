@@ -103,6 +103,9 @@ async function filterEmployeeByGenderFirestore(gender) {
 }
 
 async function filterEmployeeByProfileFirestore(profile){
+    if(profile === ""){
+        return getEmployeesFromFirestore();
+    }
     let employeesFirebase = []
     if(profile === 'no-profile-picture'){
         employeesFirebase = await db.collection("employees")
@@ -116,9 +119,15 @@ async function filterEmployeeByProfileFirestore(profile){
     return getEmployeesArray(employeesFirebase);
 }
 
-function filterEmployeeByBirthdateFirestore(start, end){
-        employeesFiltered = employeesFiltered.filter(employees => employees.birthDateEmployee >= start && employees.birthDateEmployee <= end);
-    return employeesFiltered;
+async function filterEmployeeByBirthdateFirestore(start, end){ 
+    let startDate = new Date(start);
+    let endDate = new Date(end);
+    let employeesFirebase = await db.collection("employees")
+                                .where("birthDate", ">=", startDate)
+                                .where("birthDate", "<=", endDate)
+                                .get();   
+    console.log(getEmployeesArray(employeesFirebase));
+    return getEmployeesArray(employeesFirebase);
 }
 
 
