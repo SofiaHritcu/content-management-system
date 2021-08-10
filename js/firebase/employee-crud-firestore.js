@@ -37,14 +37,8 @@ async function upadateEmployeeFromFirestore(id, firstNameEmployee, lastNameEmplo
 
 // get all of the employees from firestore
 async function  getEmployeesFromFirestore(){
-    var employees = [];
     var employeesFirebase = await db.collection("employees").get();
-    employeesFirebase.forEach((employee) => {
-                let id = employee.id;
-                let fields = employee.data();
-                let e = new Employee(id, fields.firstName, fields.lastName, fields.email, fields.birthDate, fields.gender, fields.image);
-                employees.push(e);
-            });
+    let employees = getEmployeesArray(employeesFirebase);
     return employees;
 }
 
@@ -108,13 +102,18 @@ async function filterEmployeeByGenderFirestore(gender) {
     return getEmployeesArray(employeesFirebase);
 }
 
-function filterEmployeeByProfileFirestore(profile){
+async function filterEmployeeByProfileFirestore(profile){
+    let employeesFirebase = []
     if(profile === 'no-profile-picture'){
-        employeesFiltered = employeesFiltered.filter(employees => employees.imageEmployee === profile);
+        employeesFirebase = await db.collection("employees")
+                                    .where("image", "==", profile)
+                                    .get();  
     }else if (profile === 'profile-picture'){
-        employeesFiltered = employeesFiltered.filter(employees => employees.imageEmployee !== 'no-profile-picture');
+        employeesFirebase = await db.collection("employees")
+                                    .where("image", "!=", 'no-profile-picture')
+                                    .get();      
     }
-    return employeesFiltered;
+    return getEmployeesArray(employeesFirebase);
 }
 
 function filterEmployeeByBirthdateFirestore(start, end){

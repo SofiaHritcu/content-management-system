@@ -473,8 +473,9 @@ genderFilter.addEventListener('change',async () => {
     })
 })
 
-profileFilter.addEventListener('change',() => {
-    let employeesAfterFilter =  filterEmployeeByProfile(profileFilter.value);
+profileFilter.addEventListener('change',async () => {
+    // let employeesAfterFilter =  filterEmployeeByProfile(profileFilter.value);
+    let employeesAfterFilter =  await filterEmployeeByProfileFirestore(profileFilter.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
