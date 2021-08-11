@@ -227,16 +227,41 @@ function setTableInstances (employees) {
     })
 }
 
+// clear input fields 
+function clearInputFields(){
+    // reset input form
+    form.reset();
+    document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
+    onChange();
+    // alert the success of clearing the inputs 
+    document.getElementById('fields-cleared').setAttribute('class','alert alert-success my-2');
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 1500);
+}
+
 
 // add event on form submit
 form.addEventListener('submit', async function (e) {
     e.preventDefault()
     if(document.querySelector('.submit-button').textContent.indexOf('Update') !== 0){
-        await addEmployeeSubmit();
+        addEmployeeSubmit();
         document.getElementById('added-success').setAttribute('class','alert alert-success my-2');
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 1500);
     }else{
-         updateEmployeeSubmit();
+        updateEmployeeSubmit();
         document.getElementById('updated-success').setAttribute('class','alert alert-success my-2');
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 1500);
     }
 
 })
@@ -461,17 +486,17 @@ function previewFile() {
     const preview = document.getElementById("profile-picture-preview");
     const file = document.querySelector('input[type=file]').files[0];
     const reader = new FileReader();
-  
+
 
     reader.addEventListener("load", function () {
-      // convert image file to base64 string
-      preview.src = reader.result;
+        // convert image file to base64 string
+        preview.src = reader.result;
     }, false);
-  
+
     if (file) {
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
     }
-  }
+}
     
 
 // filters
@@ -492,25 +517,32 @@ profileFilter.addEventListener('change',async () => {
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
- })
+})
 
- birthdateFilterEnd.addEventListener('change',async () => {
+birthdateFilterEnd.addEventListener('change',async () => {
     let employeesAfterFilter =  await filterEmployeeByBirthdate(birthdateFilterStart.value, birthdateFilterEnd.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
- })
+})
 
 
- function deleteFilters(){
+async function deleteFilters(){
      console.log("all filters deleted");
-    let employees =  loadData();
+    let employees =  await loadData();
     document.querySelector("tbody").innerHTML = "";
     employees.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
- }
+    document.getElementById('filters-deleted').setAttribute('class','alert alert-success my-2');
+    // alert dissapears automatically after 1.5 sec
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 1500);
+}
 
  // sortings
 

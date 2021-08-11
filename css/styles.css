@@ -109,7 +109,7 @@ text-decoration: none;
     background-color: var(--background-lighter-color);
 }
 
-.submit {
+.submit, .clear {
     background-color: var(--background-darker-color) !important;
     color: var(--text-color);
     font-family: 'Yanone Kaffeesatz', sans-serif;
@@ -139,7 +139,7 @@ text-decoration: none;
     padding-right: 0 !important;
 }
 
-.submit-button {
+.submit-button, .clear-button {
     display: flex;
     justify-content: center;
     margin-top: 5%;
