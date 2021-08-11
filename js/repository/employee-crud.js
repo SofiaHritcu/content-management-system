@@ -11,7 +11,7 @@ async function deleteEmployee(employeeToDeleteId){
 
 async function updateEmployee(id, firstName, lastName, email, birthdate, gender, image){
     // updateEmployeeLS(id, firstName, lastName,email, birthdate, gender, image );
-    await upadateEmployeeFromFirestore(id, firstName, lastName,email, birthdate, gender, image );
+    await updateEmployeeFromFirestore(id, firstName, lastName,email, birthdate, gender, image );
 }
 
 function getEmployeeById(idEmployee) {

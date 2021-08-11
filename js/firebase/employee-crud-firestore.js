@@ -1,3 +1,30 @@
+// transactions
+function updateTransactionFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee){
+    var employeeDocRef = db.collection("employees").doc(id+"");
+    return db.runTransaction((transaction) => {
+        // This code may get re-run multiple times if there are conflicts.
+        return transaction.get(employeeDocRef).then((employeeDoc) => {
+                                                    if (!employeeDoc.exists) {
+                                                        throw "Document does not exist!";
+                                                    }
+                                            
+                                                    // Note: this could be done without a transaction
+                                                    //       by updating the population using FieldValue.increment()
+                                                    transaction.update(employeeDocRef, {
+                                                                    firstName: firstNameEmployee,
+                                                                    lastName: lastNameEmployee,
+                                                                    email: emailEmployee,
+                                                                    birthDate: birthDateEmployee,
+                                                                    gender: genderEmployee,
+                                                                    image: imageEmployee
+                                                                })
+                                                    });
+                                                }).then(() => {
+                                                    console.log("Transaction successfully committed!");
+                                                }).catch((error) => {
+                                                    console.log("Transaction failed: ", error);
+                                                });
+}
 
 // add all of the employees to firestore
 function addEmployeesToFirestore(employees) {    
@@ -10,7 +37,7 @@ function addEmployeesToFirestore(employees) {
 
 // add one employee to firestore
 async function addEmployeeToFirestore(employee) { 
-    employee.birthDateEmployee = new Date(employee.birthdate);   
+    employee.birthDateEmployee = new Date(employee.birthDateEmployee); 
     await db.collection("employees").doc(employee.idEmployee+"")
                                 .withConverter(employeeConverter)
                                 .set(employee);
@@ -22,18 +49,22 @@ async function deleteEmployeeFromFirestore(idEmployee) {
                             .delete()
 }
 
+
+
 // update one employee from firestore
-async function upadateEmployeeFromFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee) { 
-    birthDateEmployee = new Date(birthDateEmployee);   ;
-    await db.collection("employees").doc(id+"")
-                            .update({
-                                firstName: firstNameEmployee,
-                                lastName: lastNameEmployee,
-                                email: emailEmployee,
-                                birthDate: birthDateEmployee,
-                                gender: genderEmployee,
-                                image: imageEmployee
-                            })
+async function updateEmployeeFromFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee) { 
+    console.log(birthDateEmployee+"in up");
+    birthDateEmployee = new Date(birthDateEmployee);   
+    await updateTransactionFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee);
+    // await db.collection("employees").doc(id+"")
+    //                         .update({
+    //                             firstName: firstNameEmployee,
+    //                             lastName: lastNameEmployee,
+    //                             email: emailEmployee,
+    //                             birthDate: birthDateEmployee,
+    //                             gender: genderEmployee,
+    //                             image: imageEmployee
+    //                         })
 }
 
 

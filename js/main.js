@@ -235,7 +235,7 @@ form.addEventListener('submit', async function (e) {
         await addEmployeeSubmit();
         document.getElementById('added-success').setAttribute('class','alert alert-success my-2');
     }else{
-        await updateEmployeeSubmit();
+         updateEmployeeSubmit();
         document.getElementById('updated-success').setAttribute('class','alert alert-success my-2');
     }
 
@@ -244,7 +244,6 @@ form.addEventListener('submit', async function (e) {
 
 async function addEmployeeSubmit(){
     if (inputImage.files.length == 0) {
-        console.log(inputBirthDate.value);
         await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, 'no-profile-picture')
         loadData().then(employeesLocally => {
             console.log(employeesLocally);
@@ -323,7 +322,6 @@ async function updateEmployeeSubmit(){
     console.log('update submit');
     // const idEmployeeToBeUpdated = getEmployeeByIdToBeUpdatedLS();
     const idEmployeeToBeUpdated = await getEmployeeIdToBeUpdatedFirestore();
-    console.log(idEmployeeToBeUpdated);
     let employeeToBeUpdated = await getEmployeeById(idEmployeeToBeUpdated);
     if (inputImage.files.length == 0) {
         console.log(inputBirthDate.value + moment(inputBirthDate.value).format("DD MM YYYY"));
@@ -373,7 +371,7 @@ async function updateEmployeeSubmit(){
 
 // function for changing format of birthdate by replacing the date input with a text input and a button 
 function onChange (){
-    document.querySelector(".birthdate").innerHTML = '<input placeholder="Select date" type="date"  id="input-birthdate" class="form-control">';
+    document.querySelector(".birthdate").innerHTML = '<input placeholder="Select date" type="date"  id="input-birthdate" min="1900-01-01" max="2005-12-31" class="form-control">';
     inputBirthDate = document.getElementById('input-birthdate');
     inputBirthDate.addEventListener('change', function(e){
         e.preventDefault();
@@ -390,7 +388,7 @@ function onChange (){
             9: 'October',
             10: 'November',
             11: 'December'
-          }
+        }
         var firstPartInnerHTML = '<input placeholder="';
         firstPartInnerHTML += getDateFromOld(inputBirthDate.value);
         firstPartInnerHTML += '" type="text" readonly id="input-birthdate" class="form-control">'
