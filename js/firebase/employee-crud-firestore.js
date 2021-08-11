@@ -56,15 +56,6 @@ async function updateEmployeeFromFirestore(id, firstNameEmployee, lastNameEmploy
     console.log(birthDateEmployee+"in up");
     birthDateEmployee = new Date(birthDateEmployee);   
     await updateTransactionFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee);
-    // await db.collection("employees").doc(id+"")
-    //                         .update({
-    //                             firstName: firstNameEmployee,
-    //                             lastName: lastNameEmployee,
-    //                             email: emailEmployee,
-    //                             birthDate: birthDateEmployee,
-    //                             gender: genderEmployee,
-    //                             image: imageEmployee
-    //                         })
 }
 
 
@@ -164,4 +155,43 @@ async function filterEmployeeByBirthdateFirestore(start, end){
     return getEmployeesArray(employeesFirebase);
 }
 
+async function filterAllFirestore(filters){
+    let gender = filters.get('gender');
+    let profile = filters.get('image');
+    let start = filters.get('birthDate').start;
+    let end = filters.get('birthDate').end;
+    console.log(gender, profile, start, end);
+
+    // compound query for filtering by gender and profile
+    let employeeRef = db.collection("employees");
+    if(gender !== ""){
+        employeeRef = employeeRef.where("gender", "==", gender);
+    }
+    if(profile === "no-profile-picture"){
+        employeeRef = employeeRef.where("image", "in", [profile])
+    }else if (profile === 'profile-picture'){
+        employeeRef = employeeRef.where("image", "!=", 'no-profile-picture');
+    }
+
+    // simple query for filtering by birthdate
+    let employeeRefBirthdate = db.collection("employees");
+    employeeRefBirthdate = employeeRefBirthdate.where("birthDate", ">=", start).where("birthDate", "<=", end);
+
+    // execute queries
+    let employeesFirebase = await employeeRef.get();
+    let employeesBirthdateFirebase = await employeeRefBirthdate.get();
+
+    // get array of employees from firestore result 
+    let genderProfileEmployees = getEmployeesArray(employeesFirebase);
+    let birthDateEmployees = getEmployeesArray(employeesBirthdateFirebase);
+    let finalFilteredResult = genderProfileEmployees.filter(function(employee) {
+                                                        // check whether in th second array, there is
+                                                        // an employee with the same id as the current employee
+                                                        if(birthDateEmployees.filter(e => e.idEmployee === employee.idEmployee).length !== 0)
+                                                            return true;
+                                                        else
+                                                            return false;
+                                                        });
+    return finalFilteredResult;
+}
 
