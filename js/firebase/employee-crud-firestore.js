@@ -38,6 +38,8 @@ function addEmployeesToFirestore(employees) {
 // add one employee to firestore
 async function addEmployeeToFirestore(employee) { 
     employee.birthDateEmployee = new Date(employee.birthDateEmployee); 
+    await db.collection("howMany").doc('1')
+                                    .update({noOfEmployees: firebase.firestore.FieldValue.increment(1)});
     await db.collection("employees").doc(employee.idEmployee+"")
                                 .withConverter(employeeConverter)
                                 .set(employee);
@@ -45,6 +47,8 @@ async function addEmployeeToFirestore(employee) {
 
 // delete one employee from firestore
 async function deleteEmployeeFromFirestore(idEmployee) { 
+    await db.collection("howMany").doc('1')
+                                    .update({noOfEmployees: firebase.firestore.FieldValue.increment(-1)});
     await db.collection("employees").doc(idEmployee+"")
                             .delete()
 }
@@ -53,7 +57,6 @@ async function deleteEmployeeFromFirestore(idEmployee) {
 
 // update one employee from firestore
 async function updateEmployeeFromFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee) { 
-    console.log(birthDateEmployee+"in up");
     birthDateEmployee = new Date(birthDateEmployee);   
     await updateTransactionFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee);
 }
@@ -61,8 +64,13 @@ async function updateEmployeeFromFirestore(id, firstNameEmployee, lastNameEmploy
 
 // get all of the employees from firestore
 async function  getEmployeesFromFirestore(){
-    var employeesFirebase = await db.collection("employees").get();
+    // var employeesFirebase = await db.collection("employees").get();
+    var employeesFirebase = await db.collection("employees")
+                                    .orderBy("firstName")
+                                    .limit(5)
+                                    .get();
     let employees = getEmployeesArray(employeesFirebase);
+    // await db.collection("howMany").doc('1').set({noOfEmployees: employees.length});
     return employees;
 }
 
@@ -146,12 +154,10 @@ async function filterEmployeeByProfileFirestore(profile){
 async function filterEmployeeByBirthdateFirestore(start, end){ 
     let startDate = new Date(start);
     let endDate = new Date(end);
-    console.log(startDate,' ',endDate, typeof(startDate));
     let employeesFirebase = await db.collection("employees")
                                 .where("birthDate", ">=", startDate)
                                 .where("birthDate", "<=", endDate)
                                 .get();   
-    console.log(getEmployeesArray(employeesFirebase));
     return getEmployeesArray(employeesFirebase);
 }
 
@@ -160,7 +166,6 @@ async function filterAllFirestore(filters){
     let profile = filters.get('image');
     let start = filters.get('birthDate').start;
     let end = filters.get('birthDate').end;
-    console.log(gender, profile, start, end);
 
     // compound query for filtering by gender and profile
     let employeeRef = db.collection("employees");
@@ -195,3 +200,10 @@ async function filterAllFirestore(filters){
     return finalFilteredResult;
 }
 
+
+// pagination
+
+async function getNumberOfEmployeesDocFirestore(){
+    let noOfEmployeesAsync = await db.collection("howMany").doc("1").get();
+    return await noOfEmployeesAsync.data().noOfEmployees;
+}

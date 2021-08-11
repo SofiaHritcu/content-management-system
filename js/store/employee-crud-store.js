@@ -21,7 +21,8 @@ function getEmployeeById(idEmployee) {
 
 function getNumberOfEmployees(){
     // return getNumberOfEmployeesLS();
-    return getNumberOfEmployeesFromFirestore();
+    // return getNumberOfEmployeesFromFirestore();
+    return getNumberOfEmployeesDocFirestore();
 }
 
 function putData() {

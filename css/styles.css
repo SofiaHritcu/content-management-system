@@ -57,7 +57,7 @@ text-decoration: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 180vh;
+    height: 195vh;
     min-height: 300px;
 }
 
@@ -116,6 +116,13 @@ text-decoration: none;
     font-size: 1.4em !important;
 }
 
+.pagination {
+    background-color: var(--background-darker-color) !important;
+    color: var(--text-color);
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 1em !important;
+}
+
 .changeBirthDate {
     background-color: var(--background-lighter-color) !important;
     color: var(--text-color);
@@ -143,6 +150,12 @@ text-decoration: none;
     display: flex;
     justify-content: center;
     margin-top: 5%;
+}
+
+.pagination-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 1%;
 }
 
 .change-button {
@@ -251,3 +264,7 @@ hr {
 /* .dataTables_empty {
     display: none;
 } */
+
+
+
+

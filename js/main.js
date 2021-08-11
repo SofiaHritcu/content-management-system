@@ -4,7 +4,6 @@ var currentId = 1;
 window.onload = async function (){
     console.log("loading");
     let numberEmployees = await getNumberOfEmployees();
-    console.log(numberEmployees);
     if( numberEmployees !== 0){
         // let employeesLocally = loadData();
         // console.log(employeesLocally);
@@ -18,13 +17,20 @@ window.onload = async function (){
         getMaxId().then(function (maxId) {
             currentId = maxId + 1;
             console.log('currentId: '+currentId);
-        })
-        employeesLocally = await loadData();
-        console.log(employeesLocally);
-        employees = employeesLocally;
-        employeesLocally.forEach(employee =>{
-            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
         });
+        // hide table to render loading indicator
+        document.getElementById("employees").hidden = true;
+        employeesLocally = await loadData();
+        // dispatch click event on next button in order to load first page
+        let nextButton = document.getElementById('next-button');
+        nextButton.dispatchEvent(new Event("click"));
+        document.getElementById("employees").hidden = false;
+        document.getElementById("loading-employees").setAttribute('style','display: none!important ;')
+
+        // employees = employeesLocally;
+        // employeesLocally.forEach(employee =>{
+        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        // });
     } else {
         currentId = 1;
         document.getElementById('table-title').innerHTML = "NO EMPLOYEES YET";
@@ -34,18 +40,27 @@ window.onload = async function (){
     $(document).ready(function() {
         $('#employees').DataTable({
             "ordering": true,
-            pageLength: 4,
-            lengthMenu: [[4, 8, 16, -1], [4, 8, 16, "All"]],
+            // pageLength: 5,
+            // lengthMenu: [[5, 10, 15, -1], [5, 10, 15, "All"]],
             "columnDefs":   [
                                 {
-                                "targets": [  5, 6 ],
+                                "targets": [ 5, 6 ],
                                     orderable: false
                                 },
                             ],
-        
+            "paging": false,
+            "bInfo": false,    
         });
+
+        // pagination
+
+        // check if the current number od employees is bigger than the number of them on each page
+        console.log(numberEmployees);
+        console.log(document.getElementById("employees").getAttribute("data-page-size"));
+        if (numberEmployees > document.getElementById("employees").getAttribute("data-page-size")){
+            document.getElementById("next-button").setAttribute("class","btn pagination");
+        }
     } );
-    
     
 }
 
@@ -115,7 +130,6 @@ async function eraseEmployee(employee) {
 
     await deleteEmployee(employeeToDeleteId);
     var employeesLocally = await loadData();
-    console.log(employeesLocally);
     document.querySelector("tbody").innerHTML = "";
     employeesLocally.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -132,7 +146,6 @@ async function editEmployee(employee) {
         inputFirstName.value = employeeToUpdate.firstNameEmployee;
         inputLastName.value = employeeToUpdate.lastNameEmployee;
         inputEmail.value = employeeToUpdate.emailEmployee;
-        console.log(moment(employeeToUpdate.birthDateEmployee.toDate()).format("MM/DD/YYYY"));
         changeBirthdateInput(moment(employeeToUpdate.birthDateEmployee.toDate()).format("MM/DD/YYYY"));
         inputGender.value = employeeToUpdate.genderEmployee;
         if(employeeToUpdate.imageEmployee !== 'no-profile-picture'){
@@ -182,8 +195,6 @@ function getDateFromOld(oldFormatDate) {
     var year = date.getFullYear();
     var month = months[date.getMonth()];
     var day = date.getDate();
-    console.log(day+' ' + month + ' ' + year);
-    console.log(oldFormatDate);
     return day+' ' + month + ' ' + year;
 }
 
@@ -203,7 +214,6 @@ function addTableInstance (id, firstName, lastName, email, birthdate, gender, im
     var tdFirstName = createTd(firstName);
     var tdLastName = createTd(lastName);
     var tdEmail = createTd(email);
-    console.log(birthdate);
     var tdBirthDate = createTd(moment(birthdate.toDate()).format("DD MMMM YYYY"));
     // var tdBirthDate = createTd(birthdate);
     var tdGender = createTd(gender);
@@ -275,7 +285,6 @@ async function addEmployeeSubmit(){
     if (inputImage.files.length == 0) {
         await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, 'no-profile-picture')
         loadData().then(employeesLocally => {
-            console.log(employeesLocally);
             document.querySelector("tbody").innerHTML = "";
             employeesLocally.forEach(employee =>{
                 addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -316,10 +325,8 @@ async function addEmployeeSubmit(){
 
     resultImage.then(async function(result) {
         imageBase64 = result;
-        console.log(inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value);
         await addEmployee(inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, imageBase64)
         loadData().then(employeesLocally => {
-            console.log(employeesLocally);
             document.querySelector("tbody").innerHTML = "";
             employeesLocally.forEach(employee =>{
                 addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -353,7 +360,6 @@ async function updateEmployeeSubmit(){
     const idEmployeeToBeUpdated = await getEmployeeIdToBeUpdatedFirestore();
     let employeeToBeUpdated = await getEmployeeById(idEmployeeToBeUpdated);
     if (inputImage.files.length == 0) {
-        console.log(inputBirthDate.value + moment(inputBirthDate.value).format("DD MM YYYY"));
         await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, employeeToBeUpdated.imageEmployee);
         var employeesLocally = await loadData();
         document.querySelector("tbody").innerHTML = "";
@@ -450,8 +456,6 @@ inputBirthDate.addEventListener('change', function(e){
     var month = months[birthdate.getMonth()];
     var day = birthdate.getDate();
     firstPartInnerHTML += day+' ' + month + ' ' + year;
-    console.log(day+' ' + month + ' ' + year);
-    console.log(birthdate);
     currentBirthDate = inputBirthDate.value;
     firstPartInnerHTML += '" type="text" readonly id="input-birthdate" class="form-control">'
     firstPartInnerHTML += '<div class="change-button"> <button class="btn changeBirthDate"  onclick="onChange()" id="change">Change Birth Date</button></div>'
@@ -556,14 +560,59 @@ async function deleteFilters(){
  // sortings
 
 async function sortDataBy(column, field){
-    console.log(column);
     const col = document.querySelector("."+column);
     const sorting = col.getAttribute('class');
-    console.log("in sort", sorting);
     if(sorting.indexOf('sorting_asc') !== -1 || sorting.indexOf('sorting') !== -1){
-        console.log("in sort-asc");
         await sortFirestore(field,'asc');
     }else if (sorting.indexOf('sorting_desc') !== -1){
         await sortFirestore(field,'desc');
     }
+}
+
+// pagination
+let lastVisible = new Object();
+let page = 1;
+let employeesOnPage = new Number(document.getElementById("employees").getAttribute("data-page-size"));
+let currentEmployeesFetched = 0;
+async function next(){
+    console.log("next");
+    if( page === 1){
+        console.log("1 page");
+        var first = db.collection("employees")
+                        .orderBy("firstName")
+                        .limit(5);
+        let employeesFirstPageAsync = await first.get();
+        lastVisible = employeesFirstPageAsync.docs[employeesFirstPageAsync.docs.length-1];
+        currentEmployeesFetched = employeesOnPage;
+        let employeesFirstPage = getEmployeesArray(employeesFirstPageAsync)
+        document.querySelector("tbody").innerHTML = "";
+        employeesFirstPage.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        });
+    }else {
+        console.log(page+" page");
+        var next = db.collection("employees")
+                        .orderBy("firstName")
+                        .startAfter(lastVisible)
+                        .limit(5);
+        let employeesPageAsync = await next.get();
+        lastVisible = employeesPageAsync.docs[employeesPageAsync.docs.length-1];
+        currentEmployeesFetched += new Number(employeesPageAsync.docs.length);
+        let employeesPage = getEmployeesArray(employeesPageAsync)
+        document.querySelector("tbody").innerHTML = "";
+        employeesPage.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        })   
+        // disable next-button if there are no more employees to fetch
+        let numberOfEmployeesInFirestore = await getNumberOfEmployees();
+        if ( currentEmployeesFetched == numberOfEmployeesInFirestore) {
+            console.log("here");
+            document.getElementById('next-button').className = "btn pagination disabled";
+        }
+    }
+    page++;
+}
+
+function prev(){
+    console.log("prev");
 }
