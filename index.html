@@ -29,7 +29,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js"></script>
         
-        <div class="container">
+        <div class="container" id="at-top">
             <nav class="navbar navbar-expand-lg fixed-top">
                 <a class="navbar-brand" href="#">
                     <img 
@@ -60,8 +60,27 @@
                             data-show-export="true"
                             data-click-to-select="true"
                             data-toolbar="#toolbar">
-                            <caption class="text-center" id="table-title">List of employees</caption>
-                            <thead class="thead-dark">
+                            <caption class="text-center" id="table-title">
+                                <div class="alert alert-success my-1 hidden-alert" role="alert" id="added-success">
+                                    Employee added ! 
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                </div>
+                                <div class="alert alert-success my-1 hidden-alert" role="alert" id="updated-success">
+                                    Employee updated ! 
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border hidden-spinner" role="status" id="loading-indicator">
+                                      <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                List of employees
+                            </caption>
+                            <thead class="thead-dark" id="employees-thead">
                               <tr>
                                 <th scope="col" class="id-column">#</th>
                                 <th scope="col" class="first-name-column" onclick="sortDataBy('first-name-column','firstName')" text-center>First Name</th>
@@ -125,12 +144,6 @@
                                 </div>
                             </div>
                             <button class="btn" onclick="deleteFilters()"><i class="fas fa-trash-alt"></i> Delete all filters</button><br>
-                            <div class="alert alert-success my-5 hidden-alert" role="alert" id="filters-deleted">
-                                Filters deleted ! 
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                            </div>
                         </div>
                     </div>
                    
@@ -215,18 +228,6 @@
                                 </div>
                             </div>
 
-                            <div class="alert alert-success my-5 hidden-alert" role="alert" id="added-success">
-                                Employee added ! 
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                            </div>
-                            <div class="alert alert-success my-5 hidden-alert" role="alert" id="updated-success">
-                                Employee updated ! 
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                            </div>
                             <div class="alert alert-success my-5 hidden-alert" role="alert" id="fields-cleared">
                                 Fileds cleared ! 
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">

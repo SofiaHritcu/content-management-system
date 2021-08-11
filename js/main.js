@@ -246,24 +246,28 @@ function clearInputFields(){
 // add event on form submit
 form.addEventListener('submit', async function (e) {
     e.preventDefault()
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
     if(document.querySelector('.submit-button').textContent.indexOf('Update') !== 0){
         addEmployeeSubmit();
+        document.getElementById('loading-indicator').setAttribute('class', 'spinner-border hidden-spinner');
         document.getElementById('added-success').setAttribute('class','alert alert-success my-2');
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 
             });
         }, 1500);
+        document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     }else{
         updateEmployeeSubmit();
         document.getElementById('updated-success').setAttribute('class','alert alert-success my-2');
+        document.getElementById('loading-indicator').setAttribute('class', 'spinner-border hidden-spinner');
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 
             });
         }, 1500);
+        document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     }
-
 })
 
 
@@ -380,7 +384,7 @@ async function updateEmployeeSubmit(){
     resultImage.then(async function(result) {
         imageBase64 = result;
         await updateEmployee(idEmployeeToBeUpdated,inputFirstName.value, inputLastName.value, inputEmail.value, inputBirthDate.value, inputGender.value, imageBase64);
-        var employeesLocally = loadData();
+        var employeesLocally = await loadData();
         document.querySelector("tbody").innerHTML = "";
         employeesLocally.forEach(employee =>{
             addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
@@ -503,45 +507,50 @@ function previewFile() {
 
 genderFilter.addEventListener('change',async () => {
     // let employeesAfterFilter =  filterEmployeeByGenderLS(genderFilter.value);
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
+    document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     let employeesAfterFilter =  await filterEmployeeByGender(genderFilter.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-    })
+    });
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border hidden-spinner');
 })
 
 profileFilter.addEventListener('change',async () => {
     // let employeesAfterFilter =  filterEmployeeByProfile(profileFilter.value);
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
+    document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     let employeesAfterFilter =  await filterEmployeeByProfile(profileFilter.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border hidden-spinner');
 })
 
 birthdateFilterEnd.addEventListener('change',async () => {
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
+    document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     let employeesAfterFilter =  await filterEmployeeByBirthdate(birthdateFilterStart.value, birthdateFilterEnd.value);
     document.querySelector("tbody").innerHTML = "";
     employeesAfterFilter.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border hidden-spinner');
 })
 
 
 async function deleteFilters(){
-     console.log("all filters deleted");
+    console.log("all filters deleted");
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
+    document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     let employees =  await loadData();
     document.querySelector("tbody").innerHTML = "";
     employees.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
-    document.getElementById('filters-deleted').setAttribute('class','alert alert-success my-2');
-    // alert dissapears automatically after 1.5 sec
-    window.setTimeout(function() {
-        $(".alert").fadeTo(500, 0).slideUp(500, function(){
-            $(this).remove(); 
-        });
-    }, 1500);
+    document.getElementById('loading-indicator').setAttribute('class', 'spinner-border hidden-spinner');
 }
 
  // sortings
