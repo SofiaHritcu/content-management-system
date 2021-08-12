@@ -90,12 +90,46 @@
                             </caption>
                             <thead class="thead-dark" id="employees-thead">
                               <tr>
-                                <th scope="col" class="id-column">#</th>
-                                <th scope="col" class="first-name-column" onclick="sortDataBy('first-name-column','firstName')" text-center>First Name</th>
-                                <th scope="col" class="last-name-column" onclick="sortDataBy('last-name-column','lastName')">Last Name</th>
-                                <th scope="col" class="email-column" onclick="sortDataBy('email-column', 'email')">Email</th>
-                                <th scope="col" class="birth-date-column" onclick="sortDataBy('birth-date-column', 'birthDate')">Birth Date</th>
-                                <th scope="col" class="gender-column" data-field="gender" onclick="sortDataById()">Gender</th>
+                                <th 
+                                    scope="col" 
+                                    class="id-column text-center">
+                                    #
+                                </th>
+                                <th 
+                                    scope="col" 
+                                    class="first-name-column text-center srt" 
+                                    onclick="sortDataByWithPagination('first-name-column','firstName')" 
+                                    text-center>
+                                    First Name
+                                    <i id="arr-first-name-column" class="fas fa-arrows-alt-v"></i>
+                                </th>
+                                <th 
+                                    scope="col" 
+                                    class="last-name-column text-center srt" 
+                                    onclick="sortDataByWithPagination('last-name-column','lastName')">
+                                    Last Name
+                                    <i id="arr-last-name-column" class="fas fa-arrows-alt-v px-2"></i>
+                                </th>
+                                <th 
+                                    scope="col" 
+                                    class="email-column text-center srt" 
+                                    onclick="sortDataByWithPagination('email-column', 'email')">
+                                    Email
+                                    <i id="arr-email-column" class="fas fa-arrows-alt-v px-2"></i>
+                                </th>
+                                <th 
+                                    scope="col" 
+                                    class="birth-date-column text-center srt" 
+                                    onclick="sortDataByWithPagination('birth-date-column', 'birthDate')">
+                                    Birth Date
+                                    <i id="arr-birth-date-column" class="fas fa-arrows-alt-v px-2"></i>
+                                </th>
+                                <th 
+                                    scope="col" 
+                                    class="gender-column text-center srt" 
+                                    data-field="gender">
+                                    Gender
+                                </th>
                                 <th scope="col">Actions</th>
                             </thead>
                             <tbody>
@@ -278,7 +312,8 @@
         <script src="/node_modules/firebase/firebase-firestore.js"></script>
         <script src="/node_modules/firebase/firebase-analytics.js"></script>
         <script src="js/firebase/employee-crud-firestore.js"></script>
-        <script src="js/firebase/pagination-firebase.js"></script>
+        <!-- <script src="js/firebase/pagination-firebase.js"></script> -->
+        <script src="js/firebase/sortings-filters-pagination-firebase.js"></script>
         <script src="js/firebase/init.js"></script>
     </body>
 </html>

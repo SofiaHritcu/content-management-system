@@ -265,6 +265,11 @@ hr {
     display: none;
 } */
 
+.table .thead-dark th {
+    background-color: white !important;
+    border-color: white !important;
+}
+
 
 
 

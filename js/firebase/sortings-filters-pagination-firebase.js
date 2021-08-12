@@ -5,12 +5,21 @@ let page = 1;
 let employeesOnPage = new Number(document.getElementById("employees").getAttribute("data-page-size"));
 let currentEmployeesFetched = 0;
 
+
+// let sortingLastName = "";
+// let sortingEmail = "";
+// let sortingBirthdate = "";
+
 async function next(){
+    // for sortings
+    let sortingAsync = await db.collection("sortings").doc("1").get();
+    let order = sortingAsync.data().order;
+    let field = sortingAsync.data().field;
     console.log("next");
     if( page === 1){
         console.log("1 page");
         var first = db.collection("employees")
-                        .orderBy("firstName")
+                        .orderBy(field, order)
                         .limit(5);
         let employeesFirstPageAsync = await first.get();
         lastVisible = employeesFirstPageAsync.docs[employeesFirstPageAsync.docs.length-1];
@@ -26,7 +35,7 @@ async function next(){
         }
         console.log(page+" page");
         var next = db.collection("employees")
-                        .orderBy("firstName")
+                        .orderBy(field, order)
                         .startAfter(lastVisible)
                         .limit(5);
         let employeesPageAsync = await next.get();
@@ -49,6 +58,10 @@ async function next(){
 }
 
 async function prev(){
+    // for sortings
+    let sortingAsync = await db.collection("sortings").doc("1").get();
+    let order = sortingAsync.data().order;
+    let field = sortingAsync.data().field;
     page--;
     console.log("prev");
     console.log(page);
@@ -56,7 +69,7 @@ async function prev(){
     if( page === 1){
         console.log("1 page");
         var first = db.collection("employees")
-                        .orderBy("firstName")
+                        .orderBy(field, order)
                         .limit(5);
         let employeesFirstPageAsync = await first.get();
         lastVisible = employeesFirstPageAsync.docs[employeesFirstPageAsync.docs.length-1];
@@ -73,9 +86,9 @@ async function prev(){
             document.getElementById('next-button').className = "btn pagination";
         }
         var next = db.collection("employees")
-                    .orderBy("firstName")
-                    .endBefore(firstVisible)
-                    .limitToLast(5);
+                        .orderBy(field, order)
+                        .endBefore(firstVisible)
+                        .limitToLast(5);
         let employeesPageAsync = await next.get();
         lastVisible = employeesPageAsync.docs[employeesPageAsync.docs.length-1];
         firstVisible = employeesPageAsync.docs[0];
@@ -88,20 +101,20 @@ async function prev(){
     }
 }
 
-
+function resetPagination(){
+    lastVisible = new Object();
+    firstVisible = new Object();
+    page = 1;
+    employeesOnPage = new Number(document.getElementById("employees").getAttribute("data-page-size"));
+    currentEmployeesFetched = 0;
+}
 
 async function sortDataByWithPagination(column, field){
     const col = document.querySelector("."+column);
     const sorting = col.getAttribute('class');
     console.log(sorting);
     if(sorting.indexOf('srt-a') !== -1 || (sorting.indexOf('srt') !== -1 && sorting.indexOf('srt-d') === -1)){
-        await db.collection("sortings").doc(field).set({order: "asc"});
-        // let employees = await sortFirestore(field,'asc');
-        // console.log(employees);
-        // document.querySelector("tbody").innerHTML = "";
-        // employees.forEach(employee =>{
-        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-        // });
+        await db.collection("sortings").doc("1").set({field: field, order: "asc"});
         col.setAttribute('class',column+' text-center srt-d');
         if (column === 'birth-date-column'){
             document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-amount-up-alt");
@@ -109,13 +122,7 @@ async function sortDataByWithPagination(column, field){
             document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-alpha-up-alt");
         }
     }else if (sorting.indexOf('srt-d') !== -1){
-        await db.collection("sortings").doc(field).set({order: "desc"});
-
-        // let employees = await sortFirestore(field,'desc');
-        // document.querySelector("tbody").innerHTML = "";
-        // employees.forEach(employee =>{
-        //     addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-        // });
+        await db.collection("sortings").doc("1").set({field: field, order: "desc"});
         col.setAttribute('class',column+' text-center srt-a');
         if (column === 'birth-date-column'){
             document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-amount-down-alt");
@@ -123,5 +130,6 @@ async function sortDataByWithPagination(column, field){
             document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-alpha-down-alt");
         }
     }
-    next()
+    resetPagination();
+    next();
 }

@@ -117,9 +117,9 @@ async function getEmployeeIdToBeUpdatedFirestore(){
 // sorting
 
 async function sortFirestore(field, order){
+    console.log(field+" "+order);
     var employeesFirebase = await db.collection("employees").orderBy(field, order).get();
-    let = employees = getEmployeesArray(employeesFirebase);
-    console.log("Employees sorted by", field, "in", order, "order", employees);
+    return  getEmployeesArray(employeesFirebase);
 }
 
 

@@ -20,7 +20,7 @@ window.onload = async function (){
         });
         // hide table to render loading indicator
         document.getElementById("employees").hidden = true;
-        employeesLocally = await loadData();
+        // employeesLocally = await loadData();
         // dispatch click event on next button in order to load first page
         let nextButton = document.getElementById('next-button');
         nextButton.dispatchEvent(new Event("click"));
@@ -39,22 +39,22 @@ window.onload = async function (){
     
     $(document).ready(function() {
         $('#employees').DataTable({
-            "ordering": true,
+            "ordering": false,
             // pageLength: 5,
             // lengthMenu: [[5, 10, 15, -1], [5, 10, 15, "All"]],
             "columnDefs":   [
                                 {
-                                "targets": [ 5, 6 ],
+                                "targets": [ 0, 5, 6 ],
                                     orderable: false
                                 },
                             ],
             "paging": false,
-            "bInfo": false,    
+            "bInfo": false, 
         });
 
         // pagination
 
-        // check if the current number od employees is bigger than the number of them on each page
+        // check if the current number id employees is bigger than the number of them on each page
         console.log(numberEmployees);
         console.log(document.getElementById("employees").getAttribute("data-page-size"));
         if (numberEmployees > document.getElementById("employees").getAttribute("data-page-size")){
@@ -90,6 +90,7 @@ var currentBirthDate = '';
 // creates an <td></td> element with given text
 function createTd( text ){
     td =  document.createElement('td');
+    td.setAttribute('class','text-center');
     var tdText = document.createTextNode(text);
     td.appendChild(tdText);
     return td;
@@ -559,10 +560,32 @@ async function deleteFilters(){
 async function sortDataBy(column, field){
     const col = document.querySelector("."+column);
     const sorting = col.getAttribute('class');
-    if(sorting.indexOf('sorting_asc') !== -1 || sorting.indexOf('sorting') !== -1){
-        await sortFirestore(field,'asc');
-    }else if (sorting.indexOf('sorting_desc') !== -1){
-        await sortFirestore(field,'desc');
+    console.log(sorting);
+    if(sorting.indexOf('srt-a') !== -1 || (sorting.indexOf('srt') !== -1 && sorting.indexOf('srt-d') === -1)){
+        let employees = await sortFirestore(field,'asc');
+        console.log(employees);
+        document.querySelector("tbody").innerHTML = "";
+        employees.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        });
+        col.setAttribute('class',column+' text-center srt-d');
+        if (column === 'birth-date-column'){
+            document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-amount-up-alt");
+        }else{
+            document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-alpha-up-alt");
+        }
+    }else if (sorting.indexOf('srt-d') !== -1){
+        let employees = await sortFirestore(field,'desc');
+        document.querySelector("tbody").innerHTML = "";
+        employees.forEach(employee =>{
+            addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
+        });
+        col.setAttribute('class',column+' text-center srt-a');
+        if (column === 'birth-date-column'){
+            document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-amount-down-alt");
+        }else{
+            document.getElementById("arr-"+column).setAttribute("class", "fas fa-sort-alpha-down-alt");
+        }
     }
 }
 
