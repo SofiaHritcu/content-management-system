@@ -50,6 +50,7 @@ window.onload = async function (){
                             ],
             "paging": false,
             "bInfo": false, 
+            "searching": false,
         });
 
         // pagination
@@ -134,7 +135,9 @@ async function eraseEmployee(employee) {
     document.querySelector("tbody").innerHTML = "";
     employeesLocally.forEach(employee =>{
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
-    })
+    });
+    resetPagination();
+    next();
   }
 
 
@@ -158,6 +161,8 @@ async function editEmployee(employee) {
         // setEmployeeIdToBeUpdatedLS(employeeToUpdate.idEmployee);
         await setEmployeeIdToBeUpdatedFirestore(employeeToUpdate.idEmployee);
     }
+    resetPagination();
+    next();
 }
 
 
@@ -292,6 +297,8 @@ async function addEmployeeSubmit(){
             form.reset();
             document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
             onChange();
+            resetPagination();
+            next();
             return;
         })
         return ;
@@ -336,7 +343,8 @@ async function addEmployeeSubmit(){
             onChange();
         })
         
-        
+        resetPagination();
+        next();
         
         // var employeesLocally = loadData();
         // document.querySelector("tbody").innerHTML = "";
@@ -350,6 +358,7 @@ async function addEmployeeSubmit(){
         // document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
         // onChange();
     });
+    
 }
 
 async function updateEmployeeSubmit(){
@@ -369,7 +378,8 @@ async function updateEmployeeSubmit(){
         form.reset();
         document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
         onChange();
-
+        resetPagination();
+        next();
         return;
     }
 
@@ -398,6 +408,8 @@ async function updateEmployeeSubmit(){
         form.reset();
         document.getElementById('profile-picture-preview').src = "//placehold.it/140?text=IMAGE";
         onChange();
+        resetPagination();
+        next();
     });
 }
 
@@ -509,6 +521,7 @@ function previewFile() {
 
 genderFilter.addEventListener('change',async () => {
     // let employeesAfterFilter =  filterEmployeeByGenderLS(genderFilter.value);
+    document.getElementById("next-button").setAttribute("class","btn pagination disabled");
     document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
     document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     let employeesAfterFilter =  await filterEmployeeByGender(genderFilter.value);
@@ -521,6 +534,7 @@ genderFilter.addEventListener('change',async () => {
 
 profileFilter.addEventListener('change',async () => {
     // let employeesAfterFilter =  filterEmployeeByProfile(profileFilter.value);
+    document.getElementById("next-button").setAttribute("class","btn pagination disabled");
     document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
     document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     let employeesAfterFilter =  await filterEmployeeByProfile(profileFilter.value);
@@ -532,6 +546,7 @@ profileFilter.addEventListener('change',async () => {
 })
 
 birthdateFilterEnd.addEventListener('change',async () => {
+    document.getElementById("next-button").setAttribute("class","btn pagination disabled");
     document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
     document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
     let employeesAfterFilter =  await filterEmployeeByBirthdate(birthdateFilterStart.value, birthdateFilterEnd.value);
@@ -544,6 +559,10 @@ birthdateFilterEnd.addEventListener('change',async () => {
 
 
 async function deleteFilters(){
+    let numberEmployees = await getNumberOfEmployees();
+    if (numberEmployees > document.getElementById("employees").getAttribute("data-page-size")){
+        document.getElementById("next-button").setAttribute("class","btn pagination");
+    }
     console.log("all filters deleted");
     document.getElementById('loading-indicator').setAttribute('class', 'spinner-border');
     document.getElementById("at-top").scrollIntoView({behavior: 'smooth'});
@@ -553,6 +572,8 @@ async function deleteFilters(){
         addTableInstance(employee.idEmployee, employee.firstNameEmployee, employee.lastNameEmployee, employee.emailEmployee, employee.birthDateEmployee, employee.genderEmployee, employee.imageEmployee);
     })
     document.getElementById('loading-indicator').setAttribute('class', 'spinner-border hidden-spinner');
+    resetPagination();
+    next();
 }
 
  // sortings
